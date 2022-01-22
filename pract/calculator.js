@@ -18,7 +18,7 @@ function calcNumber(event, number1, number2) {
 }
 
 function checkValidParams(number1, number2) {
-	const isValidNumber = isNaN(number1) && isNaN(number2);
+	const isValidNumber = isNaN(number1) || isNaN(number2);
 	return isValidNumber ? false : true;
 }
 
