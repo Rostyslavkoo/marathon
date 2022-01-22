@@ -1,17 +1,19 @@
 function calcNumber(event, number1, number2) {
-	if (event === 'sum') {
-		return number1 + number2;
-	} else if (event === 'div') {
-		if (number2 === 0) {
-			return 'Error!! division by 0';
-		}
-		return number1 / number2;
-	} else if (event === 'multi') {
-		return number1 * number2;
-	} else if (event === 'sub') {
-		return number1 - number2;
-	} else {
-		return 'not valid event';
+	switch (event) {
+		case 'sum':
+			return number1 + number2;
+			break;
+		case 'div':
+			return number2 === 0 ? 'Error!! division by 0' : number1 / number2;
+			break;
+		case 'multi':
+			return number1 * number2;
+			break;
+		case 'sub':
+			return number1 - number2;
+			break;
+		default:
+			return 'not valid event';
 	}
 }
 
