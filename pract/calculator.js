@@ -2,23 +2,24 @@ function calcNumber(event, number1, number2) {
 	switch (event) {
 		case 'sum':
 			return number1 + number2;
-			break;
 		case 'div':
-			return number2 === 0 ? 'Error!! division by 0' : number1 / number2;
-			break;
+			if (number2 === 0) {
+				return 'Error!! division by 0';
+			} else {
+				return number1 / number2;
+			}
 		case 'multi':
 			return number1 * number2;
-			break;
 		case 'sub':
 			return number1 - number2;
-			break;
 		default:
 			return 'not valid event';
 	}
 }
 
 function checkValidParams(number1, number2) {
-	const isValidNumber = isNaN(number1) || isNaN(number2) || !number1 || !number2;
+	const isValidNumber =
+		isNaN(number1) || isNaN(number2) || !number1 || !number2;
 	return isValidNumber ? false : true;
 }
 
