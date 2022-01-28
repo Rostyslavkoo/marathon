@@ -9,12 +9,10 @@ function calcNumber(event, number1, number2) {
     if(event === 'div' && number2 == 0){
         return 'Error!! division by 0'
     }
-
-    for (operation in operations){
-            return operations[event]
-
-    }
-  
+	if(event in operations){
+		return operations[event]
+	}
+	return 'unknown operation'
         
 
 }
@@ -30,7 +28,7 @@ function showCalcedValue(event, number1, number2) {
 }
 function getCalcValue() {
 	let number1 = 1
-	let number2 = 5
+	let number2 = 0
 	let event = 'sum'
 	const isValidParams = checkValidParams(number1, number2);
 	if (!isValidParams) {
