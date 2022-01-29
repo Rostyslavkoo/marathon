@@ -51,17 +51,8 @@ function showList() {
 			doneList += ` '${item}'\n`;
 		}
 	}
-	if (!toDoList) {
-		toDoList = '--';
-	}
-	if (!inProgressList) {
-		inProgressList = '--';
-	}
-	if (!doneList) {
-		doneList = '--';
-	}
 	console.log(
-		`To Do: \n${toDoList}\nIn Progress: \n${inProgressList}\nDone: \n${doneList}\n`
+		`To Do: \n${toDoList || ' --'}\nIn Progress: \n${inProgressList || ' --'}\nDone: \n${doneList || ' --'}\n`
 	);
 }
 addTask('new task');
