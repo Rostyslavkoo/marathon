@@ -5,7 +5,9 @@ const DONE = 'Done';
 const list = {
 	'create a new practice task': 'In Progress',
 	'make a bed': 'Done',
+	'new post': 'To Do',
 	'write a post': 'To Do',
+
 };
 
 function changeStatus(event, status) {
@@ -17,7 +19,6 @@ function changeStatus(event, status) {
 		}
 	} else {
 		console.error('CHANGE STATUS ERROR!!! task not found');
-		
 	}
 }
 function addTask(event) {
@@ -27,7 +28,6 @@ function addTask(event) {
 	}
 	list[event] = TO_DO;
 }
-
 function deleteTask(event) {
 	if (event in list) {
 		delete list[event];
@@ -37,24 +37,32 @@ function deleteTask(event) {
 }
 
 function showList() {
-	console.warn('To Do:');
+	let toDoList = '';
+	let inProgressList = '';
+	let doneList = '';
 	for (item in list) {
 		if (list[item] === TO_DO) {
-			console.log(item);
+			toDoList += ` ${item}'\n`;
 		}
-	}
-	console.warn('In Progress:');
-	for (item in list) {
 		if (list[item] === IN_PROGRESS) {
-			console.log(item);
+			inProgressList += ` '${item}'\n`;
 		}
-	}
-	console.warn('Done:');
-	for (item in list) {
 		if (list[item] === DONE) {
-			console.log(item);
+			doneList += ` '${item}'\n`;
 		}
 	}
+	if (!toDoList) {
+		toDoList = '--';
+	}
+	if (!inProgressList) {
+		inProgressList = '--';
+	}
+	if (!doneList) {
+		doneList = '--';
+	}
+	console.log(
+		`To Do: \n${toDoList}\nIn Progress: \n${inProgressList}\nDone: \n${doneList}\n`
+	);
 }
 addTask('new task');
 deleteTask('make a bed');
