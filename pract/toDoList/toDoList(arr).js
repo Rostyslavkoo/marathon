@@ -107,23 +107,15 @@ function showBy(event) {
 	};
 
 	list.forEach(task => {
-		tasks[event === 'status' ? task.status : task.priority] += ` ${task.name} \n`;
+		tasks[
+			event === 'status' ? task.status : task.priority
+		] += ` ${task.name} \n`;
 	});
-	if (event === 'status') {
-		console.log(
-			`${STATUS.TO_DO}: \n${tasks[STATUS.TO_DO] || emptyTasks}\n${
-				STATUS.IN_PROGRESS
-			}: \n${tasks[STATUS.IN_PROGRESS] || emptyTasks}\n${STATUS.DONE}: \n${
-				tasks[STATUS.DONE] || emptyTasks
-			}\n`
-		);
-	} else if (event === 'priority') {
-		console.log(
-			`${PRIORITY.HIGHT}: \n${tasks[PRIORITY.HIGHT] || emptyTasks}\n${
-				PRIORITY.LOW
-			}: \n${tasks[PRIORITY.LOW] || emptyTasks}\n`
-		);
-	}
+	let showByStatus = `${STATUS.TO_DO}: \n${tasks[STATUS.TO_DO] || emptyTasks}\n${STATUS.IN_PROGRESS}: \n${tasks[STATUS.IN_PROGRESS] || emptyTasks}\n${STATUS.DONE}: \n${tasks[STATUS.DONE] || emptyTasks}\n`;
+
+	let showByPriority = `${PRIORITY.HIGHT}: \n${tasks[PRIORITY.HIGHT] || emptyTasks}\n${PRIORITY.LOW}: \n${tasks[PRIORITY.LOW] || emptyTasks}\n`;
+
+	console.log(event === 'status' ? showByStatus : showByPriority);
 }
 addTask('new task', 'hight');
 deleteTask('make a bed');
