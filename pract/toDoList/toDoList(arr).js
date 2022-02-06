@@ -7,6 +7,10 @@ const PRIORITY = {
 	HIGHT: 'hight',
 	LOW: 'low',
 };
+const DEFAULT = {
+	STATUS: STATUS.TO_DO,
+	PRIORITY: PRIORITY.LOW,
+};
 
 const list = [
 	{
@@ -38,17 +42,17 @@ function checkValidStatus(status) {
 function checkValidPriority(priority) {
 	return Object.values(PRIORITY).includes(priority);
 }
-function checkExistTask(task) {
-	return list.find(e => e.name === task);
+function checkExistTask(taskName) {
+	return list.find(task => task.name === taskName);
 }
-function checkSameStatus(name, status) {
-	let task = list.find(e => e.name === name);
+function checkSameStatus(taskName, status) {
+	let task = list.find(task => task.name === taskName);
 	return task.status === status;
 }
-function changeStatus(name, status) {
-	let isExistTrask = checkExistTask(name);
+function changeStatus(taskName, status) {
+	let isExistTrask = checkExistTask(taskName);
 	let isValidStatus = checkValidStatus(status);
-	let hasSameStatus = checkSameStatus(name, status);
+	let hasSameStatus = checkSameStatus(taskName, status);
 	if (!isExistTrask) {
 		console.error('CHANGE STATUS ERROR!!! task not found');
 		return;
@@ -61,40 +65,46 @@ function changeStatus(name, status) {
 		console.error('CHANGE STATUS ERROR!!! task has the same status');
 		return;
 	}
-	let task = list.find(e => e.name === name);
+
+	let task = list.find(task => task.name === taskName);
 	task.status = status;
 }
-function addTask(name, priority) {
+function addTask(
+	taskName,
+	priority = DEFAULT.PRIORITY,
+	status = DEFAULT.STATUS
+) {
+	let isExistTrask = checkExistTask(taskName);
 	let isValidPriority = checkValidPriority(priority);
-	let isExistTrask = checkExistTask(name);
-	if (!isValidPriority) {
-		console.error('ADD TASK ERROR!!!!! not valid priority');
-		return;
-	}
+	let isValidStatus = checkValidStatus(status);
+
 	if (isExistTrask) {
 		console.error('ADD TASK ERROR!!! task already exist');
 		return;
 	}
-	const defaultTask = {
-		name,
-		status: STATUS.TO_DO,
-		priority: PRIORITY.LOW,
-	};
-	const customTask = {
-		name,
-		status: STATUS.TO_DO,
+	if (!isValidStatus) {
+		console.error('CHANGE STATUS ERROR!!! status not valid');
+		return;
+	}
+	if (!isValidPriority) {
+		console.error('ADD TASK ERROR!!!!! not valid priority');
+		return;
+	}
+	const newTask = {
+		name: taskName,
+		status: status,
 		priority: priority,
 	};
 
-	list.push(priority ? customTask : defaultTask);
+	list.push(newTask);
 }
-function deleteTask(name) {
-	let isExistTask = checkExistTask(name);
+function deleteTask(taskName) {
+	let isExistTask = checkExistTask(taskName);
 	if (!isExistTask) {
 		console.error('DELETE TASK ERROR!!! task not found');
 		return;
 	}
-	let taskIndex = list.indexOf(list.find(e => e.name === name));
+	let taskIndex = list.indexOf(list.find(task => task.name === taskName));
 	list.splice(taskIndex, 1);
 }
 
@@ -111,9 +121,15 @@ function showBy(event) {
 			event === 'status' ? task.status : task.priority
 		] += ` ${task.name} \n`;
 	});
-	let showByStatus = `${STATUS.TO_DO}: \n${tasks[STATUS.TO_DO] || emptyTasks}\n${STATUS.IN_PROGRESS}: \n${tasks[STATUS.IN_PROGRESS] || emptyTasks}\n${STATUS.DONE}: \n${tasks[STATUS.DONE] || emptyTasks}\n`;
+	let showByStatus = `${STATUS.TO_DO}: \n${
+		tasks[STATUS.TO_DO] || emptyTasks
+	}\n${STATUS.IN_PROGRESS}: \n${tasks[STATUS.IN_PROGRESS] || emptyTasks}\n${
+		STATUS.DONE
+	}: \n${tasks[STATUS.DONE] || emptyTasks}\n`;
 
-	let showByPriority = `${PRIORITY.HIGHT}: \n${tasks[PRIORITY.HIGHT] || emptyTasks}\n${PRIORITY.LOW}: \n${tasks[PRIORITY.LOW] || emptyTasks}\n`;
+	let showByPriority = `${PRIORITY.HIGHT}: \n${
+		tasks[PRIORITY.HIGHT] || emptyTasks
+	}\n${PRIORITY.LOW}: \n${tasks[PRIORITY.LOW] || emptyTasks}\n`;
 
 	console.log(event === 'status' ? showByStatus : showByPriority);
 }
