@@ -174,6 +174,7 @@ function onCalculate() {
 	if (result || result === 0) {
 		calcHeader.innerHTML = result;
 	}
+	checkHeaderSize()
 }
 
 function onClicClear() {
