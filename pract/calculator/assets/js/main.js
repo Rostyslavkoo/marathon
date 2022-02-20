@@ -13,7 +13,9 @@ function calcNumber(event, number1, number2) {
 	}
 	return 'unknown operation';
 }
-const HEADER_SIZE = {};
+const HEADER_SIZE = {
+	17:'30px'
+};
 for (let i = 0; i <= 13; i++) {
 	HEADER_SIZE[i] = `${96 - 5 * i}px`;
 }
@@ -138,8 +140,10 @@ function onCalculate() {
 				: previousOperations['number2'];
 			operationBlock['number1'] = previousNumber; // set number1 for not first operation block (special for priority 1)
 		}
+			if(OPERATIONS[findOperator]){
 
-		operationBlock['priority'] = OPERATIONS[findOperator].priority; // set priority to each block
+				operationBlock['priority'] = OPERATIONS[findOperator].priority; // set priority to each block
+			}
 		operationsBlocks.push(operationBlock);
 		previousOperations = operationBlock;
 	});
@@ -170,6 +174,8 @@ function onCalculate() {
 	// show result
 	if (result || result === 0) {
 		calcHeader.innerHTML = result;
+	}else{
+		calcHeader.innerHTML = 'Error';
 	}
 	checkHeaderSize()
 }
