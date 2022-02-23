@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+crossorigin="anonymous"
+referrerpolicy="no-referrer"
+/>
+<link rel="stylesheet" href="./assets/css/style.css">
+
+    <title>Document</title>
+</head>
+<body>
+
+        <div class="container">
+        <div class="span-wrapper">
+            <span class="logo">To Do List</span>
+        </div>
+        <div class="new-task">
+            <div class="new-task__inner">
+                <input type="text" placeholder="Task to be done.." />
+                <button id="push">Add</button>
+            </div>
+            <div class="error-msg">
+                
+            </div>
+        </div>
+        <div class="tasks">
+            <h1 id="no-msg" style="display: none;">
+                <i class="fas fa-comment-slash"></i>
+                <span>You haven't scheduled any tasks yet</span>
+            </h1>
+            <div class="loader__wrapper">
+                <img class="loader" src="#" alt="">
+            </div>
+            <div class="tasks__inner" style="display: none;">
+                <div class="TO_DO" style="display: none;">
+                    <h1 class="title"><i class="fas fa-list-ul"></i><span>To Do<span></h1>
+                        <div class="tasks_block"></div>
+                </div>
+                <div class="IN_PROGRESS" style="display: none;">
+                    <h1 class="title"><i class="fas fa-spinner"></i><span>In Progress<span></h1>
+                        <div class="tasks_block"></div>
+                </div>
+                <div class="DONE" style="display: none;">
+                    <h1 class="title"><i class="fas fa-tasks"></i><span>Done<span></h1>
+                        <div class="tasks_block"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <script src="./assets/js/main.js" type="module"></script>
+</body>
+</html>
+
