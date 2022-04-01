@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./assets/css/style.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+			integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<title>Forecast</title>
+	</head>
+	<body class="unselectable">
+		<div class="container">
+			<div class="container__wrapper">
+				<div class="header">
+					<input
+						type="text"
+						id="entered-city"
+						placeholder="Enter a city name"
+					/>
+					<div class="search_btn">
+						<i class="fa-solid fa-magnifying-glass"></i>
+					</div>
+				</div>
+				<div class="content">
+					<div class="tabs__wrapper">
+						<div class="tab tab-now ">
+							<div class="title" id="city-temperature">--°</div>
+							<div class="content">
+								<!-- <i class="fa-solid fa-cloud"></i> -->
+								<img id="city-icon" />
+							</div>
+							<div class="footer">
+								<span id="city-name">-- </span>
+								<i id="city-favorite" class="fa-regular fa-heart"></i>
+							</div>
+						</div>
+						<div class="tab tab-details remove-tab">
+							<div class="title details-city_name">Aktobe</div>
+							<div class="info">
+								<div>
+									<span>Temperature:</span>
+									<p class="details-temperature">--°</p>
+								</div>
+								<div>
+									<span>Feels like:</span>
+									<p class="details-feels_like">--°</p>
+								</div>
+								<div>
+									<span>Weather:</span>
+									<p class="details-weather">--</p>
+								</div>
+								<div>
+									<span>Sunrise:</span>
+									<p class="details-sunrise">--:--</p>
+								</div>
+								<div>
+									<span>Sunset:</span>
+									<p class="details-sunset">--:--</p>
+								</div>
+							</div>
+						</div>
+						<div class="tab tab-forecast remove-tab">
+							<div class="title forecast-city_name">Aktobe</div>
+						
+
+						</div>
+						<div class="tabs__info">
+							<div class="tab-btn tab-now__btn active">Now</div>
+							<div class="tab-btn tab-details__btn ">Details</div>
+							<div class="tab-btn tab-forecast__btn">Forecast</div>
+						</div>
+					</div>
+					<div class="locations_info__wrapper">
+						<div class="title">Added Locations:</div>
+						<div class="content" id="favorite-list"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="./assets/js/main.js" type="module"></script>
+		<script src="./assets/js/view.js" type="module"></script>
+	</body>
+</html>
