@@ -51,7 +51,7 @@ const SERVER = {
 	},
 	API_KEY: 'f660a2fb1e4bad108d6160b7f58c555f',
 	ICON: 'https://openweathermap.org/img/wn/',
-	OUTPUT_DATA: [],
+	WEATHER_DATA: [],
 	FORECAST_DATA: [],
 };
 const FAVORITE_CITIES = [];
