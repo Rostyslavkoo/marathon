@@ -109,17 +109,16 @@ function getCityName(city_name) {
 async function getJSON(data, city_name = null) {
 	const cityName = getCityName(city_name);
 	const url = `${data}?q=${cityName}&appid=${SERVER.API_KEY}`;
-	return fetch(url)
-		.then(response => {
-			if (response.ok) {
-				const res = response.json();
-				return res;
-			} else {
-				// alert('unknown city');
-				return null;
-			}
-		})
-		.catch(alert);
+	try {
+		const res = await (await fetch(url)).json();
+		if (res.cod == 404) {
+			alert(res.message);
+			return null;
+		}
+		return res;
+	} catch (e) {
+		alert(e);
+	}
 }
 
 function setChosenTab() {

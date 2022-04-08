@@ -1,20 +1,9 @@
-let salaries = {
-	Іван: 100,
-	Петро: 300,
-	Марія: 250,
-};
+let map = new Map();
 
-function topSalary(salaries) {
-	let maxSalary = 0;
-	let maxName = null;
+map.set("name", "John");
 
-	for (let [name, price] of Object.entries(salaries)) {
-		if (maxSalary < price) {
-			maxSalary = price;
-			maxName = name;
-		}
-	}
-    return maxName;
-}
+let keys = Array.from(map.keys());
 
-console.log(topSalary(salaries));
+
+keys.push("more");
+console.log(keys)
