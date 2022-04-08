@@ -1,11 +1,12 @@
 import { UI_ELEMENTS, SERVER, MONTHS, FAVORITE_CITIES } from './constant.js';
 import { showFavouriteCity, deleteAddedCity } from './main.js';
+import { setItemToStore } from './store.js';
 
-function getCelciumTemp(data) {
-	return Math.round(data - 273.15);
-}
+FAVORITE_CITIES.forEach(favorite_city => {
+	addToFavoriteUI({ id: favorite_city.id, name: favorite_city.name });
+});
 
-function showInfo({
+function showNOW({
 	id = null,
 	name,
 	main: { temp: temperature } = {},
@@ -13,6 +14,7 @@ function showInfo({
 } = {}) {
 	if (!id) return;
 	choseTab('NOW');
+	setItemToStore('chosen_tab', 'NOW');
 
 	UI_ELEMENTS.TABS.BTN.DETAILS.classList.remove('active');
 	UI_ELEMENTS.TABS.BTN.NOW.classList.add('active');
@@ -28,7 +30,6 @@ function showInfo({
 		finded_city => finded_city.id === id
 	);
 
-	isExistCity;
 	if (isExistCity) {
 		UI_ELEMENTS.TABS.NOW.FAVORITE_ICON.classList.add(
 			'fa-solid',
@@ -42,7 +43,7 @@ function showInfo({
 	}
 }
 
-function showDetails({
+function showDETAILS({
 	id = null,
 	name,
 	sys: { sunrise, sunset },
@@ -51,6 +52,7 @@ function showDetails({
 } = {}) {
 	if (!id) return;
 	choseTab('DETAILS');
+	setItemToStore('chosen_tab', 'DETAILS');
 
 	UI_ELEMENTS.TABS.DETAILS.CITY_NAME.textContent = name;
 	UI_ELEMENTS.TABS.DETAILS.TEMPERATURE.textContent = `${getCelciumTemp(temp)}°`;
@@ -61,12 +63,15 @@ function showDetails({
 	UI_ELEMENTS.TABS.DETAILS.SUNRISE.textContent = timeConverter(sunrise);
 	UI_ELEMENTS.TABS.DETAILS.SUNSET.textContent = timeConverter(sunset);
 }
-function showForecast({ list: forecast_list, city: { name: city_name } }) {
+
+function showFORECAST({ list: forecast_list, city: { name: city_name } }) {
 	if (getChosenTab() === 'FORECAST') return;
+	
 	choseTab('FORECAST');
+	setItemToStore('chosen_tab', 'FORECAST');
 
 	UI_ELEMENTS.TABS.FORECAST.CITY_NAME.textContent = city_name;
-	forecast_list.reverse().forEach(list_item => {
+	forecast_list.forEach(list_item => {
 		UI_ELEMENTS.TABS.FORECAST.CITY_NAME.insertAdjacentHTML(
 			'afterEnd',
 			`
@@ -163,16 +168,18 @@ function timeConverter(data) {
 }
 function dateConverter(data) {
 	let tmpDate = new Date(data * 1000);
-	const month = [MONTHS[tmpDate.getDate()]];
+	const month = MONTHS[tmpDate.getUTCMonth()];
 	const day = tmpDate.toLocaleString().split(' ')[0].slice(0, 2);
-
 	return `${month} ${day}`;
+}
+function getCelciumTemp(data) {
+	return Math.round(data - 273.15);
 }
 
 export {
-	showInfo,
+	showNOW,
 	removeFavouriteUI,
 	addToFavoriteUI,
-	showDetails,
-	showForecast,
+	showDETAILS,
+	showFORECAST,
 };
