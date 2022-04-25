@@ -7,14 +7,9 @@ import {
 } from './view.js';
 
 import { UI_ELEMENTS, SERVER, FAVORITE_CITIES } from './constant.js';
-import { setItemToStore } from './store.js';
-
-SERVER.FORECAST_DATA = await getJSON(SERVER.URL.FORECAST);
-SERVER.WEATHER_DATA = await getJSON(SERVER.URL.WEATHER);
+import { setItemToStore, setCookie, getCookie } from './store.js';
 
 setChosenTab();
-
-// showNOW(SERVER.WEATHER_DATA);
 
 UI_ELEMENTS.TABS.NOW.FAVORITE_ICON.addEventListener('click', () => {
 	const isExistCity = FAVORITE_CITIES.find(
@@ -33,6 +28,10 @@ UI_ELEMENTS.INPUT.addEventListener('keyup', async event => {
 			SERVER.WEATHER_DATA = await getJSON(SERVER.URL.WEATHER);
 			SERVER.FORECAST_DATA = await getJSON(SERVER.URL.FORECAST);
 			setItemToStore('city_name', SERVER.WEATHER_DATA.name);
+			setCookie('city_name', SERVER.WEATHER_DATA.name, {
+				secure: true,
+				expires:new Date(Date.now() + 1e4)
+			});
 		}
 		showNOW(SERVER.WEATHER_DATA);
 	}
@@ -63,6 +62,7 @@ export async function showFavouriteCity() {
 	document.querySelectorAll('.info-block').forEach(e => e.remove());
 	UI_ELEMENTS.INPUT.value = '';
 	setItemToStore('city_name', this.textContent);
+	setCookie('city_name', this.textContent, { secure: true, expires:new Date(Date.now() + 1e4)});
 	showNOW(await getJSON(SERVER.URL.WEATHER, this.textContent));
 }
 
@@ -103,7 +103,13 @@ function getCityName(city_name) {
 	if (UI_ELEMENTS.INPUT.value) {
 		return UI_ELEMENTS.INPUT.value;
 	}
-	return SERVER.LOCALSTORAGE_DATA.city_name;
+	// if( getCookie('city_name')){
+	// 	return  getCookie('city_name')
+	// }
+	if(SERVER.LOCALSTORAGE_DATA.city_name){
+		return SERVER.LOCALSTORAGE_DATA.city_name;
+	}
+	return 'Lviv'
 }
 
 async function getJSON(data, city_name = null) {
@@ -112,16 +118,20 @@ async function getJSON(data, city_name = null) {
 	try {
 		const res = await (await fetch(url)).json();
 		if (res.cod == 404) {
+			/* eslint-disable */
 			alert(res.message);
 			return null;
 		}
 		return res;
 	} catch (e) {
-		alert(e);
+		console.error(e);
 	}
 }
 
-function setChosenTab() {
+async function setChosenTab() {
+	SERVER.WEATHER_DATA = await getJSON(SERVER.URL.WEATHER);
+	SERVER.FORECAST_DATA = await getJSON(SERVER.URL.FORECAST);
+
 	switch (SERVER.LOCALSTORAGE_DATA.chosen_tab) {
 		case 'NOW':
 			showNOW(SERVER.WEATHER_DATA);

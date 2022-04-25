@@ -1,2 +1,6 @@
 
 .DS_Store
+pract/forecast/node_modules
+pract/forecast/dist
+pract/forecast/.parcel-cache
+pract/countdown

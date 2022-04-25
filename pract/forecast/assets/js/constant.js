@@ -1,3 +1,4 @@
+
 const UI_ELEMENTS = {
 	INPUT: document.querySelector('#entered-city'),
 	MAGNIFY: document.querySelector('.search_btn'),
@@ -31,20 +32,6 @@ const UI_ELEMENTS = {
 	},
 	FAVOURITE_LIST: document.querySelector('#favorite-list'),
 };
-const MONTHS = [
-	'Jan',
-	'Feb',
-	'Mar',
-	'Apr',
-	'May',
-	'Jun',
-	'Jul',
-	'Aug',
-	'Sep',
-	'Oct',
-	'Nov',
-	'Dec',
-];
 const SERVER = {
 	URL: {
 		WEATHER: 'https://api.openweathermap.org/data/2.5/weather',
@@ -58,4 +45,4 @@ const SERVER = {
 	LOCALSTORAGE_DATA: [],
 };
 const FAVORITE_CITIES = [];
-export { UI_ELEMENTS, SERVER, FAVORITE_CITIES, MONTHS };
+export { UI_ELEMENTS, SERVER, FAVORITE_CITIES };
