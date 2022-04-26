@@ -3659,6 +3659,6 @@ var quartersInYear = 4;
 var secondsInHour = 3600;
 var secondsInMinute = 60;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["3v14N","5wnyu"], "5wnyu", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["3v14N","5wnyu"], "5wnyu", "parcelRequire25d8")
 
 //# sourceMappingURL=index.6441881b.js.map
