@@ -25,7 +25,7 @@
 	margin: 4px 0;
 	width: fit-content;
 	height: auto;
-	padding: 5px 8px 8px 6px;
+	padding: 5px 8px 1px 6px;
 	line-height: 18px;
 	box-shadow: rgba(99, 99, 99, 0.1) 1px 1px 1px 0px;
 	background: #e5e5e5;
@@ -34,6 +34,9 @@
 	flex-direction: column;
 }
 
+.msg i {
+	font-size: 12px;
+}
 .msg .text {
 	color: rgb(103, 96, 96);
 	font-size: 13px;
@@ -51,5 +54,5 @@
 .msg-time {
 	display: flex;
 	justify-content: end;
-	font-size: 10px;
+	font-size: 9px!important;
 }

@@ -1,4 +1,7 @@
 import { UI_ELEMENTS } from './constants.js';
+import { format } from 'date-fns';
+
+scrollToBottom();
 
 UI_ELEMENTS.DIALOGS.TARGET_DIALOGS.forEach(button => {
 	button.addEventListener('click', () => {
@@ -12,7 +15,7 @@ UI_ELEMENTS.DIALOGS.CLOSE_DIALOGS.forEach(close_button => {
 		closeModal(modal);
 	});
 });
-UI_ELEMENTS.DIALOGS.OVERLAY.addEventListener('click', event => {
+UI_ELEMENTS.DIALOGS.OVERLAY.addEventListener('click', () => {
 	const modals = document.querySelectorAll('.dialog.active');
 	modals.forEach(modal => {
 		closeModal(modal);
@@ -20,6 +23,7 @@ UI_ELEMENTS.DIALOGS.OVERLAY.addEventListener('click', event => {
 });
 
 function openModal(modal) {
+	``;
 	if (modal === null) return;
 	modal.classList.add('active');
 	UI_ELEMENTS.DIALOGS.OVERLAY.classList.add('active');
@@ -29,4 +33,27 @@ function closeModal(modal) {
 	if (modal === null) return;
 	modal.classList.remove('active');
 	UI_ELEMENTS.DIALOGS.OVERLAY.classList.remove('active');
+}
+export function createMessageBlock() {
+	let msg = UI_ELEMENTS.INPUTS.MESSAGE.value;
+	if (!msg) return;
+	let element = document.createElement('div');
+	element.append(UI_ELEMENTS.MESSAGE.TEMPLATE.content.cloneNode(true));
+	element.querySelector('#msg-text').textContent = msg;
+	element.querySelector('#author').textContent = 'me:';
+	element.querySelector('#msg-time').textContent = format(new Date(), '	HH:mm');
+
+	UI_ELEMENTS.MESSAGE.MSG_MAIN.append(element);
+	clearInput(UI_ELEMENTS.INPUTS.MESSAGE);
+	scrollToBottom();
+}
+
+function scrollToBottom() {
+	document
+		.querySelector('.wrapper')
+		.scrollTo(0, document.querySelector('.wrapper').scrollHeight);
+}
+
+function clearInput(input) {
+	input.value = '';
 }

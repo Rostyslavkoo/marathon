@@ -1,18 +1,11 @@
-function runOnKeys(func, ...codes) {
-	let pressed = new Set();
-	document.addEventListener('keydown', event => {
-		pressed.add(event.code);
-		for (let code of codes) {
-			if (!pressed.has(code)) {
-				return;
-			}
-		}
-		pressed.clear();
-		func();
-	});
-	document.addEventListener('keyup', function (event) {
-		pressed.delete(event.code);
-	});
+function test() {
+	while (true) {
+		let windowRelativeBottom =
+			document.documentElement.getBoundingClientRect().bottom;
+		if (windowRelativeBottom > document.documentElement.clientHeight + 100)
+			break;
+		document.body.insertAdjacentHTML('beforeend', `<p>Date: ${new Date()}</p>`);
+	}
 }
 
-runOnKeys(() => alert('Привіт!'), 'KeyQ', 'KeyW');
+test()

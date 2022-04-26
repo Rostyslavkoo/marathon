@@ -9,6 +9,17 @@
 		<title>Chat</title>
 	</head>
 	<body>
+		<template id="msg-block">
+			<div class="msg-block sent-msg" >
+				<div class="msg">
+					<div>
+						<i id="author"></i>
+						<span class="text" id="msg-text"> </span>
+					</div>
+					<i class="msg-time" id="msg-time"></i>
+				</div>
+			</div>
+		</template>
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="header">
@@ -18,79 +29,23 @@
 				<button class="btn">Log out</button>
 			</div>
 			<div class="content">
-				<div class="wrapper">
-					<div class="msg-block">
+				<div class="wrapper" id="msg-main">
+					<!-- <div class="msg-block">
 						<div class="msg">
-							<span class="text"
-								><i>interlocutor:</i> wfeqifeiwqnfewqi nwqefinwfeinewi</span
-							>
+							<span class="text"> <i>not me:</i> 12312321123</span>
 							<i class="msg-time">18:45</i>
 						</div>
-					</div>
-					<div class="msg-block">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
-					<div class="msg-block">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
-					<div class="msg-block">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
-					<div class="msg-block">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
-					<div class="msg-block">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
-					<div class="msg-block">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
-					<div class="msg-block">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
-					<div class="msg-block">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
-					<div class="msg-block sent-msg">
-						<div class="msg">
-							<span class="text"> <i>me:</i> 12312321123</span>
-							<i class="msg-time">18:45</i>
-						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="footer">
-				<input type="text" placeholder="Write a message..." />
-				<button class="btn">→</button>
+				<input type="text" id="message" placeholder="Write a message..." />
+				<button class="btn" id="send-message">→</button>
 			</div>
 		</div>
 		<div class="dialog" id="dialog-settings">
 			<div class="dialog-header">
-				<span> settings </span>
+				<span> Settings </span>
 				<span class="clear" data-modal-close>+</span>
 			</div>
 			<div class="dialog-content">
