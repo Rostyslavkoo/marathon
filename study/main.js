@@ -1,15 +1,18 @@
-function askPassword(ok, fail) {
-    let password = prompt('Пароль?', '');
-    if (password == "rockstar") ok();
-    else fail();
-  }
-  
-  let user = {
-    name: 'Іван',
-  
-    login(result) {
-      alert( this.name + (result ? ' увійшов' : ' виконав невдалу спробу входу') );
-    }
-  };
-  
-  askPassword(user.login.bind(user,true),user.login.bind(user,false)); // ?
+function runOnKeys(func, ...codes) {
+	let pressed = new Set();
+	document.addEventListener('keydown', event => {
+		pressed.add(event.code);
+		for (let code of codes) {
+			if (!pressed.has(code)) {
+				return;
+			}
+		}
+		pressed.clear();
+		func();
+	});
+	document.addEventListener('keyup', function (event) {
+		pressed.delete(event.code);
+	});
+}
+
+runOnKeys(() => alert('Привіт!'), 'KeyQ', 'KeyW');
