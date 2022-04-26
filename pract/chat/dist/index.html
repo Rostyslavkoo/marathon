@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/index.f3b972e4.css">
+		<link rel="stylesheet" href="/index.3bc21f5f.css">
+		<title>Chat</title>
+	</head>
+	<body>
+		<template id="msg-block">
+			<div class="msg-block sent-msg">
+				<div class="msg">
+					<div>
+						<i id="author"></i>
+						<span class="text" id="msg-text"> </span>
+					</div>
+					<i class="msg-time" id="msg-time"></i>
+				</div>
+			</div>
+		</template>
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="header">
+				<button class="btn btn-settings" data-modal-target="#dialog-settings">
+					Settings
+				</button>
+				<button class="btn">Log out</button>
+			</div>
+			<div class="content">
+				<div class="wrapper" id="msg-main">
+					<!-- <div class="msg-block">
+						<div class="msg">
+							<span class="text"> <i>not me:</i> 12312321123</span>
+							<i class="msg-time">18:45</i>
+						</div>
+					</div> -->
+				</div>
+			</div>
+			<div class="footer">
+				<input type="text" id="message" placeholder="Write a message...">
+				<button class="btn" id="send-message">→</button>
+			</div>
+		</div>
+		<div class="dialog" id="dialog-settings">
+			<div class="dialog-header">
+				<span> Settings </span>
+				<span class="clear" data-modal-close="">+</span>
+			</div>
+			<div class="dialog-content">
+				<div class="title">name in chat</div>
+				<div class="inner">
+					<input type="text" placeholder="Rostyk">
+					<button class="btn">→</button>
+				</div>
+			</div>
+		</div>
+		<script src="/index.6441881b.js" defer=""></script>
+		<script src="./assets/js/view.js" defer=""></script>
+	</body>
+</html>
