@@ -29,11 +29,9 @@ async function sendRequest(url, email) {
 		const options = {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Type': 'application/json',
 			},
-			body: new URLSearchParams({
-				email: email,
-			}),
+			body: JSON.stringify({ email: email }),
 		};
 
 		const res = await fetch(url, options);

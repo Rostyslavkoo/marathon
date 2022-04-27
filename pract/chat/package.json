@@ -6,7 +6,9 @@
   "name": "chat",
   "version": "1.0.0",
   "description": "fw",
-  "devDependencies": {},
+  "devDependencies": {
+    
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-dev":"npx parcel build index.html",

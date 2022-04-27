@@ -2,7 +2,7 @@ const UI_ELEMENTS = {
 	BUTTONS: {
 		SETTINGS: document.querySelector('.btn-settings'),
 		SENT_MESSAGE: document.querySelector('#send-message'),
-		GET_CODE:document.querySelector('#get-code')
+		GET_CODE: document.querySelector('#get-code'),
 	},
 	DIALOGS: {
 		TARGET_DIALOGS: document.querySelectorAll('[data-modal-target]'),
@@ -20,7 +20,7 @@ const UI_ELEMENTS = {
 	},
 };
 const SERVER = {
-	URL:'https://mighty-cove-31255.herokuapp.com/api/user'
-}
+	URL: 'https://mighty-cove-31255.herokuapp.com/api/user',
+};
 
-export { UI_ELEMENTS,SERVER };
+export { UI_ELEMENTS, SERVER };
