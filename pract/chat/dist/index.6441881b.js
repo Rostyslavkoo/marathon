@@ -544,17 +544,14 @@ _constantsJs.UI_ELEMENTS.BUTTONS.GET_CODE.addEventListener('click', ()=>{
 _constantsJs.UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.addEventListener('keypress', (event)=>{
     if (event.keyCode === 13) getCode();
 });
-async function sendRequest(url, email) {
+async function sendRequest(url, params) {
     try {
-        if (!email) throw Error('Enter an email');
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                email: email
-            })
+            body: JSON.stringify(params)
         };
         const res = await fetch(url, options);
         if (res.status !== 200) throw Error(res.statusText);
@@ -564,7 +561,14 @@ async function sendRequest(url, email) {
     }
 }
 async function getCode() {
-    const res = await sendRequest(_constantsJs.SERVER.URL, _constantsJs.UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.value);
+    const params = {
+        email: _constantsJs.UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.value
+    };
+    if (!params.email) {
+        alert('Enter an email');
+        return;
+    }
+    const res = await sendRequest(_constantsJs.SERVER.URL, params);
     if (!res) return;
     _viewJs.showConfirmation();
 }

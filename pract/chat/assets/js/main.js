@@ -22,16 +22,14 @@ UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.addEventListener('keypress', event => {
 	}
 });
 
-async function sendRequest(url, email) {
+async function sendRequest(url, params) {
 	try {
-		if (!email) throw Error('Enter an email');
-
 		const options = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ email: email }),
+			body: JSON.stringify(params),
 		};
 
 		const res = await fetch(url, options);
@@ -45,10 +43,15 @@ async function sendRequest(url, email) {
 }
 
 async function getCode() {
-	const res = await sendRequest(
-		SERVER.URL,
-		UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.value
-	);
+	const params = {
+		email: UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.value,
+	};
+	if (!params.email) {
+		alert('Enter an email');
+		return;
+	}
+
+	const res = await sendRequest(SERVER.URL, params);
 	if (!res) return;
 	showConfirmation();
 }
