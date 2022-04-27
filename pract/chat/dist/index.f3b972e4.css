@@ -160,4 +160,24 @@ body {
   transform: translateY(0);
 }
 
+.dialog-autorisation .dialog-content input {
+  width: 100%;
+}
+
+.dialog-autorisation .dialog-content .btn {
+  width: 40%;
+  height: 40px;
+  margin-top: 10px;
+}
+
+.dialog-confirmation .dialog-content input {
+  width: 100%;
+}
+
+.dialog-confirmation .dialog-content .btn {
+  width: 40%;
+  height: 40px;
+  margin-top: 10px;
+}
+
 /*# sourceMappingURL=index.f3b972e4.css.map */

@@ -6,6 +6,7 @@ scrollToBottom();
 UI_ELEMENTS.DIALOGS.TARGET_DIALOGS.forEach(button => {
 	button.addEventListener('click', () => {
 		const modal = document.querySelector(button.dataset.modalTarget);
+		closeAllModals();
 		openModal(modal);
 	});
 });
@@ -16,14 +17,17 @@ UI_ELEMENTS.DIALOGS.CLOSE_DIALOGS.forEach(close_button => {
 	});
 });
 UI_ELEMENTS.DIALOGS.OVERLAY.addEventListener('click', () => {
+	if (UI_ELEMENTS.DIALOGS.OVERLAY.classList.contains('block')) return;
+	closeAllModals();
+});
+function closeAllModals() {
 	const modals = document.querySelectorAll('.dialog.active');
 	modals.forEach(modal => {
 		closeModal(modal);
 	});
-});
+}
 
 function openModal(modal) {
-	``;
 	if (modal === null) return;
 	modal.classList.add('active');
 	UI_ELEMENTS.DIALOGS.OVERLAY.classList.add('active');
@@ -56,4 +60,9 @@ function scrollToBottom() {
 
 function clearInput(input) {
 	input.value = '';
+}
+
+export function showConfirmation(){
+	const modal = document.querySelector('#dialog-confirmation')
+	openModal(modal)
 }

@@ -530,20 +530,57 @@ var _constantsJs = require("./constants.js");
 var _viewJs = require("./view.js");
 _constantsJs.UI_ELEMENTS.BUTTONS.SENT_MESSAGE.addEventListener('click', (event)=>{
     _viewJs.createMessageBlock();
+    _constantsJs.UI_ELEMENTS.INPUTS.MESSAGE.focus();
 });
 _constantsJs.UI_ELEMENTS.INPUTS.MESSAGE.addEventListener('keypress', (event)=>{
-    if (event.keyCode === 13) _viewJs.createMessageBlock();
+    if (event.keyCode === 13) {
+        _viewJs.createMessageBlock();
+        _constantsJs.UI_ELEMENTS.INPUTS.MESSAGE.focus();
+    }
 });
+_constantsJs.UI_ELEMENTS.BUTTONS.GET_CODE.addEventListener('click', ()=>{
+    getCode();
+});
+_constantsJs.UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.addEventListener('keypress', (event)=>{
+    if (event.keyCode === 13) getCode();
+});
+async function sendRequest(url, email) {
+    try {
+        if (!email) throw Error('Enter an email');
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                email: email
+            })
+        };
+        const res = await fetch(url, options);
+        if (res.status !== 200) throw Error(res.statusText);
+        return await res.json();
+    } catch (e) {
+        alert(e);
+    }
+}
+async function getCode() {
+    const res = await sendRequest(_constantsJs.SERVER.URL, _constantsJs.UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.value);
+    if (!res) return;
+    _viewJs.showConfirmation();
+}
 
 },{"./constants.js":"31o3C","./view.js":"a4jdU"}],"31o3C":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "UI_ELEMENTS", ()=>UI_ELEMENTS
 );
+parcelHelpers.export(exports, "SERVER", ()=>SERVER
+);
 const UI_ELEMENTS = {
     BUTTONS: {
         SETTINGS: document.querySelector('.btn-settings'),
-        SENT_MESSAGE: document.querySelector('#send-message')
+        SENT_MESSAGE: document.querySelector('#send-message'),
+        GET_CODE: document.querySelector('#get-code')
     },
     DIALOGS: {
         TARGET_DIALOGS: document.querySelectorAll('[data-modal-target]'),
@@ -551,12 +588,17 @@ const UI_ELEMENTS = {
         OVERLAY: document.querySelector('.overlay')
     },
     INPUTS: {
-        MESSAGE: document.querySelector('#message')
+        MESSAGE: document.querySelector('#message'),
+        AUTORISATION_EMAIL: document.querySelector('#autorisation-email'),
+        CONFIRMATION_COD: document.querySelector('#confirmation-cod')
     },
     MESSAGE: {
         MSG_MAIN: document.querySelector('#msg-main'),
         TEMPLATE: document.querySelector('#msg-block')
     }
+};
+const SERVER = {
+    URL: 'https://mighty-cove-31255.herokuapp.com/api/user'
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
@@ -594,12 +636,15 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createMessageBlock", ()=>createMessageBlock
 );
+parcelHelpers.export(exports, "showConfirmation", ()=>showConfirmation
+);
 var _constantsJs = require("./constants.js");
 var _dateFns = require("date-fns");
 scrollToBottom();
 _constantsJs.UI_ELEMENTS.DIALOGS.TARGET_DIALOGS.forEach((button)=>{
     button.addEventListener('click', ()=>{
         const modal = document.querySelector(button.dataset.modalTarget);
+        closeAllModals();
         openModal(modal);
     });
 });
@@ -610,11 +655,15 @@ _constantsJs.UI_ELEMENTS.DIALOGS.CLOSE_DIALOGS.forEach((close_button)=>{
     });
 });
 _constantsJs.UI_ELEMENTS.DIALOGS.OVERLAY.addEventListener('click', ()=>{
+    if (_constantsJs.UI_ELEMENTS.DIALOGS.OVERLAY.classList.contains('block')) return;
+    closeAllModals();
+});
+function closeAllModals() {
     const modals = document.querySelectorAll('.dialog.active');
     modals.forEach((modal)=>{
         closeModal(modal);
     });
-});
+}
 function openModal(modal) {
     if (modal === null) return;
     modal.classList.add('active');
@@ -642,6 +691,10 @@ function scrollToBottom() {
 }
 function clearInput(input) {
     input.value = '';
+}
+function showConfirmation() {
+    const modal = document.querySelector('#dialog-confirmation');
+    openModal(modal);
 }
 
 },{"./constants.js":"31o3C","date-fns":"9yHCA","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9yHCA":[function(require,module,exports) {

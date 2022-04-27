@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<template id="msg-block">
-			<div class="msg-block sent-msg" >
+			<div class="msg-block sent-msg">
 				<div class="msg">
 					<div>
 						<i id="author"></i>
@@ -20,7 +20,7 @@
 				</div>
 			</div>
 		</template>
-		<div class="overlay"></div>
+		<div class="overlay active"></div>
 		<div class="container">
 			<div class="header">
 				<button class="btn btn-settings" data-modal-target="#dialog-settings">
@@ -51,12 +51,37 @@
 			<div class="dialog-content">
 				<div class="title">name in chat</div>
 				<div class="inner">
-					<input type="text" placeholder="Rostyk" />
+					<input type="text" id="settings-chat-name" placeholder="Rostyk" />
 					<button class="btn">→</button>
 				</div>
 			</div>
 		</div>
+		<div class="dialog dialog-autorisation active" id="dialog-autorisation">
+			<div class="dialog-header">
+				<span>Autorisation</span>
+				<span class="clear" data-modal-close>+</span>
+			</div>
+			<div class="dialog-content">
+				<div class="title">email</div>
+				<input
+					type="text"
+					id="autorisation-email"
+					placeholder="example@gmail.com"
+				/>
+				<button class="btn" id="get-code">Get the cod</button>
+			</div>
+		</div>
+		<div class="dialog dialog-confirmation" id="dialog-confirmation">
+			<div class="dialog-header">
+				<span>Сonfirmation</span>
+				<span class="clear" data-modal-close>+</span>
+			</div>
+			<div class="dialog-content">
+				<div class="title">cod</div>
+				<input type="text" id="confirmation-cod" />
+				<button class="btn">Enter</button>
+			</div>
+		</div>
 		<script src="./assets/js/main.js" type="module"></script>
-		<script src="./assets/js/view.js" type="module"></script>
 	</body>
 </html>

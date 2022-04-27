@@ -8,7 +8,10 @@
   "description": "fw",
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-dev":"npx parcel build index.html",
+    "build-pages":"npx parcel build index.html --public-url /marathon/pract/chat/dist --no-content-hash",
+    "start":"npx parcel index.html"
   },
   "author": "",
   "license": "ISC"
