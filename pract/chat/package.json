@@ -1,19 +1,17 @@
 {
   "dependencies": {
     "date-fns": "^2.28.0",
+    "js-cookie": "^3.0.1",
     "parcel": "^2.5.0"
   },
   "name": "chat",
   "version": "1.0.0",
   "description": "fw",
-  "devDependencies": {
-    
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev":"npx parcel build index.html",
-    "build-pages":"npx parcel build index.html --public-url /marathon/pract/chat/dist --no-content-hash",
-    "start":"npx parcel index.html"
+    "build-dev": "npx parcel build index.html",
+    "build-pages": "npx parcel build index.html --public-url /marathon/pract/chat/dist --no-content-hash",
+    "start": "npx parcel index.html"
   },
   "author": "",
   "license": "ISC"

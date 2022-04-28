@@ -526,8 +526,16 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"5wnyu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getCookie", ()=>getCookie
+);
 var _constantsJs = require("./constants.js");
 var _viewJs = require("./view.js");
+var _jsCookie = require("js-cookie");
+var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
+var _requestServiceJs = require("./requestService.js");
+var _requestServiceJsDefault = parcelHelpers.interopDefault(_requestServiceJs);
 _constantsJs.UI_ELEMENTS.BUTTONS.SENT_MESSAGE.addEventListener('click', (event)=>{
     _viewJs.createMessageBlock();
     _constantsJs.UI_ELEMENTS.INPUTS.MESSAGE.focus();
@@ -544,18 +552,32 @@ _constantsJs.UI_ELEMENTS.BUTTONS.GET_CODE.addEventListener('click', ()=>{
 _constantsJs.UI_ELEMENTS.INPUTS.AUTORISATION_EMAIL.addEventListener('keypress', (event)=>{
     if (event.keyCode === 13) getCode();
 });
-async function sendRequest(url, params) {
+_constantsJs.UI_ELEMENTS.BUTTONS.ENTER_CODE.addEventListener('click', ()=>{
+    confirmCode();
+});
+_constantsJs.UI_ELEMENTS.INPUTS.CONFIRMATION_COD.addEventListener('keypress', (event)=>{
+    if (event.keyCode === 13) confirmCode();
+});
+_constantsJs.UI_ELEMENTS.INPUTS.CHAT_NAME.addEventListener('keypress', (event)=>{
+    if (event.keyCode === 13) changeChatName();
+});
+_constantsJs.UI_ELEMENTS.BUTTONS.SEND_USER_NAME.addEventListener('click', ()=>{
+    changeChatName();
+});
+async function changeChatName() {
     try {
+        const name = _constantsJs.UI_ELEMENTS.INPUTS.CHAT_NAME.value;
+        if (!name) {
+            alert('enter a name');
+            return;
+        }
         const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(params)
+            name: name
         };
-        const res = await fetch(url, options);
-        if (res.status !== 200) throw Error(res.statusText);
-        return await res.json();
+        const res = await _requestServiceJsDefault.default.patch(_constantsJs.SERVER.URL, options);
+        console.log(await getUserData());
+        _constantsJs.UI_ELEMENTS.INPUTS.CHAT_NAME.value = '';
+        _viewJs.closeAllModals();
     } catch (e) {
         alert(e);
     }
@@ -568,12 +590,47 @@ async function getCode() {
         alert('Enter an email');
         return;
     }
-    const res = await sendRequest(_constantsJs.SERVER.URL, params);
-    if (!res) return;
-    _viewJs.showConfirmation();
+    try {
+        await _requestServiceJsDefault.default.post(_constantsJs.SERVER.URL, params);
+        _viewJs.showConfirmation();
+    } catch (e) {
+        alert(e);
+    }
+}
+async function confirmCode() {
+    try {
+        const token = _constantsJs.UI_ELEMENTS.INPUTS.CONFIRMATION_COD.value;
+        if (!token) {
+            alert('Enter a code');
+            return;
+        }
+        setCookie(_constantsJs.SERVER.COOKIE_TOKEN_NAME, token);
+        console.log(await getUserData());
+        _constantsJs.UI_ELEMENTS.INPUTS.CONFIRMATION_COD.value = '';
+        _viewJs.closeAllModals();
+    } catch (e) {
+        alert(e);
+    }
+}
+async function getUserData() {
+    try {
+        const res = _requestServiceJsDefault.default.get('https://mighty-cove-31255.herokuapp.com/api/user/me');
+        return res;
+    } catch (e) {
+        alert(e);
+    }
+}
+function setCookie(name, value, options = {}) {
+    _jsCookieDefault.default.set(name, value, options);
+}
+function getCookie(name) {
+    return _jsCookieDefault.default.get(name);
+}
+function clearCookie(name) {
+    _jsCookieDefault.default.remove(name);
 }
 
-},{"./constants.js":"31o3C","./view.js":"a4jdU"}],"31o3C":[function(require,module,exports) {
+},{"./constants.js":"31o3C","./view.js":"a4jdU","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestService.js":"hqX08"}],"31o3C":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "UI_ELEMENTS", ()=>UI_ELEMENTS
@@ -584,7 +641,9 @@ const UI_ELEMENTS = {
     BUTTONS: {
         SETTINGS: document.querySelector('.btn-settings'),
         SENT_MESSAGE: document.querySelector('#send-message'),
-        GET_CODE: document.querySelector('#get-code')
+        GET_CODE: document.querySelector('#get-code'),
+        ENTER_CODE: document.querySelector('#enter-code'),
+        SEND_USER_NAME: document.querySelector('#send-user-name')
     },
     DIALOGS: {
         TARGET_DIALOGS: document.querySelectorAll('[data-modal-target]'),
@@ -594,7 +653,8 @@ const UI_ELEMENTS = {
     INPUTS: {
         MESSAGE: document.querySelector('#message'),
         AUTORISATION_EMAIL: document.querySelector('#autorisation-email'),
-        CONFIRMATION_COD: document.querySelector('#confirmation-cod')
+        CONFIRMATION_COD: document.querySelector('#confirmation-cod'),
+        CHAT_NAME: document.querySelector('#settings-chat-name')
     },
     MESSAGE: {
         MSG_MAIN: document.querySelector('#msg-main'),
@@ -602,7 +662,8 @@ const UI_ELEMENTS = {
     }
 };
 const SERVER = {
-    URL: 'https://mighty-cove-31255.herokuapp.com/api/user'
+    URL: 'https://mighty-cove-31255.herokuapp.com/api/user',
+    COOKIE_TOKEN_NAME: 'autorization_token'
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
@@ -638,6 +699,8 @@ exports.export = function(dest, destName, get) {
 },{}],"a4jdU":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "closeAllModals", ()=>closeAllModals
+);
 parcelHelpers.export(exports, "createMessageBlock", ()=>createMessageBlock
 );
 parcelHelpers.export(exports, "showConfirmation", ()=>showConfirmation
@@ -1652,7 +1715,7 @@ var _indexJsDefault235 = parcelHelpers.interopDefault(_indexJs235);
 var _indexJs236 = require("./constants/index.js");
 parcelHelpers.exportAll(_indexJs236, exports);
 
-},{"./add/index.js":false,"./addBusinessDays/index.js":false,"./addDays/index.js":false,"./addHours/index.js":false,"./addISOWeekYears/index.js":false,"./addMilliseconds/index.js":"7Tp9s","./addMinutes/index.js":false,"./addMonths/index.js":false,"./addQuarters/index.js":false,"./addSeconds/index.js":false,"./addWeeks/index.js":false,"./addYears/index.js":false,"./areIntervalsOverlapping/index.js":false,"./clamp/index.js":false,"./closestIndexTo/index.js":false,"./closestTo/index.js":false,"./compareAsc/index.js":false,"./compareDesc/index.js":false,"./daysToWeeks/index.js":false,"./differenceInBusinessDays/index.js":false,"./differenceInCalendarDays/index.js":false,"./differenceInCalendarISOWeekYears/index.js":false,"./differenceInCalendarISOWeeks/index.js":false,"./differenceInCalendarMonths/index.js":false,"./differenceInCalendarQuarters/index.js":false,"./differenceInCalendarWeeks/index.js":false,"./differenceInCalendarYears/index.js":false,"./differenceInDays/index.js":false,"./differenceInHours/index.js":false,"./differenceInISOWeekYears/index.js":false,"./differenceInMilliseconds/index.js":false,"./differenceInMinutes/index.js":false,"./differenceInMonths/index.js":false,"./differenceInQuarters/index.js":false,"./differenceInSeconds/index.js":false,"./differenceInWeeks/index.js":false,"./differenceInYears/index.js":false,"./eachDayOfInterval/index.js":false,"./eachHourOfInterval/index.js":false,"./eachMinuteOfInterval/index.js":false,"./eachMonthOfInterval/index.js":false,"./eachQuarterOfInterval/index.js":false,"./eachWeekOfInterval/index.js":false,"./eachWeekendOfInterval/index.js":false,"./eachWeekendOfMonth/index.js":false,"./eachWeekendOfYear/index.js":false,"./eachYearOfInterval/index.js":false,"./endOfDay/index.js":false,"./endOfDecade/index.js":false,"./endOfHour/index.js":false,"./endOfISOWeek/index.js":false,"./endOfISOWeekYear/index.js":false,"./endOfMinute/index.js":false,"./endOfMonth/index.js":false,"./endOfQuarter/index.js":false,"./endOfSecond/index.js":false,"./endOfToday/index.js":false,"./endOfTomorrow/index.js":false,"./endOfWeek/index.js":false,"./endOfYear/index.js":false,"./endOfYesterday/index.js":false,"./format/index.js":"lnm6V","./formatDistance/index.js":false,"./formatDistanceStrict/index.js":false,"./formatDistanceToNow/index.js":false,"./formatDistanceToNowStrict/index.js":false,"./formatDuration/index.js":false,"./formatISO/index.js":false,"./formatISO9075/index.js":false,"./formatISODuration/index.js":false,"./formatRFC3339/index.js":false,"./formatRFC7231/index.js":false,"./formatRelative/index.js":false,"./fromUnixTime/index.js":false,"./getDate/index.js":false,"./getDay/index.js":false,"./getDayOfYear/index.js":false,"./getDaysInMonth/index.js":false,"./getDaysInYear/index.js":false,"./getDecade/index.js":false,"./getHours/index.js":false,"./getISODay/index.js":false,"./getISOWeek/index.js":false,"./getISOWeekYear/index.js":false,"./getISOWeeksInYear/index.js":false,"./getMilliseconds/index.js":false,"./getMinutes/index.js":false,"./getMonth/index.js":false,"./getOverlappingDaysInIntervals/index.js":false,"./getQuarter/index.js":false,"./getSeconds/index.js":false,"./getTime/index.js":false,"./getUnixTime/index.js":false,"./getWeek/index.js":false,"./getWeekOfMonth/index.js":false,"./getWeekYear/index.js":false,"./getWeeksInMonth/index.js":false,"./getYear/index.js":false,"./hoursToMilliseconds/index.js":false,"./hoursToMinutes/index.js":false,"./hoursToSeconds/index.js":false,"./intervalToDuration/index.js":false,"./intlFormat/index.js":false,"./isAfter/index.js":false,"./isBefore/index.js":false,"./isDate/index.js":"kqNhT","./isEqual/index.js":false,"./isExists/index.js":false,"./isFirstDayOfMonth/index.js":false,"./isFriday/index.js":false,"./isFuture/index.js":false,"./isLastDayOfMonth/index.js":false,"./isLeapYear/index.js":false,"./isMatch/index.js":false,"./isMonday/index.js":false,"./isPast/index.js":false,"./isSameDay/index.js":false,"./isSameHour/index.js":false,"./isSameISOWeek/index.js":false,"./isSameISOWeekYear/index.js":false,"./isSameMinute/index.js":false,"./isSameMonth/index.js":false,"./isSameQuarter/index.js":false,"./isSameSecond/index.js":false,"./isSameWeek/index.js":false,"./isSameYear/index.js":false,"./isSaturday/index.js":false,"./isSunday/index.js":false,"./isThisHour/index.js":false,"./isThisISOWeek/index.js":false,"./isThisMinute/index.js":false,"./isThisMonth/index.js":false,"./isThisQuarter/index.js":false,"./isThisSecond/index.js":false,"./isThisWeek/index.js":false,"./isThisYear/index.js":false,"./isThursday/index.js":false,"./isToday/index.js":false,"./isTomorrow/index.js":false,"./isTuesday/index.js":false,"./isValid/index.js":"eXoMl","./isWednesday/index.js":false,"./isWeekend/index.js":false,"./isWithinInterval/index.js":false,"./isYesterday/index.js":false,"./lastDayOfDecade/index.js":false,"./lastDayOfISOWeek/index.js":false,"./lastDayOfISOWeekYear/index.js":false,"./lastDayOfMonth/index.js":false,"./lastDayOfQuarter/index.js":false,"./lastDayOfWeek/index.js":false,"./lastDayOfYear/index.js":false,"./lightFormat/index.js":false,"./max/index.js":false,"./milliseconds/index.js":false,"./millisecondsToHours/index.js":false,"./millisecondsToMinutes/index.js":false,"./millisecondsToSeconds/index.js":false,"./min/index.js":false,"./minutesToHours/index.js":false,"./minutesToMilliseconds/index.js":false,"./minutesToSeconds/index.js":false,"./monthsToQuarters/index.js":false,"./monthsToYears/index.js":false,"./nextDay/index.js":false,"./nextFriday/index.js":false,"./nextMonday/index.js":false,"./nextSaturday/index.js":false,"./nextSunday/index.js":false,"./nextThursday/index.js":false,"./nextTuesday/index.js":false,"./nextWednesday/index.js":false,"./parse/index.js":false,"./parseISO/index.js":false,"./parseJSON/index.js":false,"./previousDay/index.js":false,"./previousFriday/index.js":false,"./previousMonday/index.js":false,"./previousSaturday/index.js":false,"./previousSunday/index.js":false,"./previousThursday/index.js":false,"./previousTuesday/index.js":false,"./previousWednesday/index.js":false,"./quartersToMonths/index.js":false,"./quartersToYears/index.js":false,"./roundToNearestMinutes/index.js":false,"./secondsToHours/index.js":false,"./secondsToMilliseconds/index.js":false,"./secondsToMinutes/index.js":false,"./set/index.js":false,"./setDate/index.js":false,"./setDay/index.js":false,"./setDayOfYear/index.js":false,"./setHours/index.js":false,"./setISODay/index.js":false,"./setISOWeek/index.js":false,"./setISOWeekYear/index.js":false,"./setMilliseconds/index.js":false,"./setMinutes/index.js":false,"./setMonth/index.js":false,"./setQuarter/index.js":false,"./setSeconds/index.js":false,"./setWeek/index.js":false,"./setWeekYear/index.js":false,"./setYear/index.js":false,"./startOfDay/index.js":false,"./startOfDecade/index.js":false,"./startOfHour/index.js":false,"./startOfISOWeek/index.js":false,"./startOfISOWeekYear/index.js":false,"./startOfMinute/index.js":false,"./startOfMonth/index.js":false,"./startOfQuarter/index.js":false,"./startOfSecond/index.js":false,"./startOfToday/index.js":false,"./startOfTomorrow/index.js":false,"./startOfWeek/index.js":false,"./startOfWeekYear/index.js":false,"./startOfYear/index.js":false,"./startOfYesterday/index.js":false,"./sub/index.js":false,"./subBusinessDays/index.js":false,"./subDays/index.js":false,"./subHours/index.js":false,"./subISOWeekYears/index.js":false,"./subMilliseconds/index.js":"lL2M9","./subMinutes/index.js":false,"./subMonths/index.js":false,"./subQuarters/index.js":false,"./subSeconds/index.js":false,"./subWeeks/index.js":false,"./subYears/index.js":false,"./toDate/index.js":"fsust","./weeksToDays/index.js":false,"./yearsToMonths/index.js":false,"./yearsToQuarters/index.js":false,"./constants/index.js":"iOhcx","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7Tp9s":[function(require,module,exports) {
+},{"./add/index.js":false,"./addBusinessDays/index.js":false,"./addDays/index.js":false,"./addHours/index.js":false,"./addISOWeekYears/index.js":false,"./addMilliseconds/index.js":"7Tp9s","./addMinutes/index.js":false,"./addMonths/index.js":false,"./addQuarters/index.js":false,"./addSeconds/index.js":false,"./addWeeks/index.js":false,"./addYears/index.js":false,"./areIntervalsOverlapping/index.js":false,"./clamp/index.js":false,"./closestIndexTo/index.js":false,"./closestTo/index.js":false,"./compareAsc/index.js":false,"./compareDesc/index.js":false,"./daysToWeeks/index.js":false,"./differenceInBusinessDays/index.js":false,"./differenceInCalendarDays/index.js":false,"./differenceInCalendarISOWeekYears/index.js":false,"./differenceInCalendarISOWeeks/index.js":false,"./differenceInCalendarMonths/index.js":false,"./differenceInCalendarQuarters/index.js":false,"./differenceInCalendarWeeks/index.js":false,"./differenceInCalendarYears/index.js":false,"./differenceInDays/index.js":false,"./differenceInHours/index.js":false,"./differenceInISOWeekYears/index.js":false,"./differenceInMilliseconds/index.js":false,"./differenceInMinutes/index.js":false,"./differenceInMonths/index.js":false,"./differenceInQuarters/index.js":false,"./differenceInSeconds/index.js":false,"./differenceInWeeks/index.js":false,"./differenceInYears/index.js":false,"./eachDayOfInterval/index.js":false,"./eachHourOfInterval/index.js":false,"./eachMinuteOfInterval/index.js":false,"./eachMonthOfInterval/index.js":false,"./eachQuarterOfInterval/index.js":false,"./eachWeekOfInterval/index.js":false,"./eachWeekendOfInterval/index.js":false,"./eachWeekendOfMonth/index.js":false,"./eachWeekendOfYear/index.js":false,"./eachYearOfInterval/index.js":false,"./endOfDay/index.js":false,"./endOfDecade/index.js":false,"./endOfHour/index.js":false,"./endOfISOWeek/index.js":false,"./endOfISOWeekYear/index.js":false,"./endOfMinute/index.js":false,"./endOfMonth/index.js":false,"./endOfQuarter/index.js":false,"./endOfSecond/index.js":false,"./endOfToday/index.js":false,"./endOfTomorrow/index.js":false,"./endOfWeek/index.js":false,"./endOfYear/index.js":false,"./endOfYesterday/index.js":false,"./format/index.js":"lnm6V","./formatDistance/index.js":false,"./formatDistanceStrict/index.js":false,"./formatDistanceToNow/index.js":false,"./formatDistanceToNowStrict/index.js":false,"./formatDuration/index.js":false,"./formatISO/index.js":false,"./formatISO9075/index.js":false,"./formatISODuration/index.js":false,"./formatRFC3339/index.js":false,"./formatRFC7231/index.js":false,"./formatRelative/index.js":false,"./fromUnixTime/index.js":false,"./getDate/index.js":false,"./getDay/index.js":false,"./getDayOfYear/index.js":false,"./getDaysInMonth/index.js":"d31S3","./getDaysInYear/index.js":false,"./getDecade/index.js":false,"./getHours/index.js":false,"./getISODay/index.js":false,"./getISOWeek/index.js":false,"./getISOWeekYear/index.js":false,"./getISOWeeksInYear/index.js":false,"./getMilliseconds/index.js":false,"./getMinutes/index.js":false,"./getMonth/index.js":false,"./getOverlappingDaysInIntervals/index.js":false,"./getQuarter/index.js":false,"./getSeconds/index.js":false,"./getTime/index.js":false,"./getUnixTime/index.js":false,"./getWeek/index.js":false,"./getWeekOfMonth/index.js":false,"./getWeekYear/index.js":false,"./getWeeksInMonth/index.js":false,"./getYear/index.js":false,"./hoursToMilliseconds/index.js":false,"./hoursToMinutes/index.js":false,"./hoursToSeconds/index.js":false,"./intervalToDuration/index.js":false,"./intlFormat/index.js":false,"./isAfter/index.js":false,"./isBefore/index.js":false,"./isDate/index.js":"kqNhT","./isEqual/index.js":false,"./isExists/index.js":false,"./isFirstDayOfMonth/index.js":false,"./isFriday/index.js":false,"./isFuture/index.js":false,"./isLastDayOfMonth/index.js":false,"./isLeapYear/index.js":false,"./isMatch/index.js":false,"./isMonday/index.js":false,"./isPast/index.js":false,"./isSameDay/index.js":false,"./isSameHour/index.js":false,"./isSameISOWeek/index.js":false,"./isSameISOWeekYear/index.js":false,"./isSameMinute/index.js":false,"./isSameMonth/index.js":false,"./isSameQuarter/index.js":false,"./isSameSecond/index.js":false,"./isSameWeek/index.js":false,"./isSameYear/index.js":false,"./isSaturday/index.js":false,"./isSunday/index.js":false,"./isThisHour/index.js":false,"./isThisISOWeek/index.js":false,"./isThisMinute/index.js":false,"./isThisMonth/index.js":false,"./isThisQuarter/index.js":false,"./isThisSecond/index.js":false,"./isThisWeek/index.js":false,"./isThisYear/index.js":false,"./isThursday/index.js":false,"./isToday/index.js":false,"./isTomorrow/index.js":false,"./isTuesday/index.js":false,"./isValid/index.js":"eXoMl","./isWednesday/index.js":false,"./isWeekend/index.js":false,"./isWithinInterval/index.js":false,"./isYesterday/index.js":false,"./lastDayOfDecade/index.js":false,"./lastDayOfISOWeek/index.js":false,"./lastDayOfISOWeekYear/index.js":false,"./lastDayOfMonth/index.js":false,"./lastDayOfQuarter/index.js":false,"./lastDayOfWeek/index.js":false,"./lastDayOfYear/index.js":false,"./lightFormat/index.js":false,"./max/index.js":false,"./milliseconds/index.js":false,"./millisecondsToHours/index.js":false,"./millisecondsToMinutes/index.js":false,"./millisecondsToSeconds/index.js":false,"./min/index.js":false,"./minutesToHours/index.js":false,"./minutesToMilliseconds/index.js":false,"./minutesToSeconds/index.js":false,"./monthsToQuarters/index.js":false,"./monthsToYears/index.js":false,"./nextDay/index.js":false,"./nextFriday/index.js":false,"./nextMonday/index.js":false,"./nextSaturday/index.js":false,"./nextSunday/index.js":false,"./nextThursday/index.js":false,"./nextTuesday/index.js":false,"./nextWednesday/index.js":false,"./parse/index.js":false,"./parseISO/index.js":false,"./parseJSON/index.js":false,"./previousDay/index.js":false,"./previousFriday/index.js":false,"./previousMonday/index.js":false,"./previousSaturday/index.js":false,"./previousSunday/index.js":false,"./previousThursday/index.js":false,"./previousTuesday/index.js":false,"./previousWednesday/index.js":false,"./quartersToMonths/index.js":false,"./quartersToYears/index.js":false,"./roundToNearestMinutes/index.js":false,"./secondsToHours/index.js":false,"./secondsToMilliseconds/index.js":false,"./secondsToMinutes/index.js":false,"./set/index.js":"lqSMT","./setDate/index.js":false,"./setDay/index.js":false,"./setDayOfYear/index.js":false,"./setHours/index.js":false,"./setISODay/index.js":false,"./setISOWeek/index.js":false,"./setISOWeekYear/index.js":false,"./setMilliseconds/index.js":false,"./setMinutes/index.js":false,"./setMonth/index.js":"8IC8x","./setQuarter/index.js":false,"./setSeconds/index.js":false,"./setWeek/index.js":false,"./setWeekYear/index.js":false,"./setYear/index.js":false,"./startOfDay/index.js":false,"./startOfDecade/index.js":false,"./startOfHour/index.js":false,"./startOfISOWeek/index.js":false,"./startOfISOWeekYear/index.js":false,"./startOfMinute/index.js":false,"./startOfMonth/index.js":false,"./startOfQuarter/index.js":false,"./startOfSecond/index.js":false,"./startOfToday/index.js":false,"./startOfTomorrow/index.js":false,"./startOfWeek/index.js":false,"./startOfWeekYear/index.js":false,"./startOfYear/index.js":false,"./startOfYesterday/index.js":false,"./sub/index.js":false,"./subBusinessDays/index.js":false,"./subDays/index.js":false,"./subHours/index.js":false,"./subISOWeekYears/index.js":false,"./subMilliseconds/index.js":"lL2M9","./subMinutes/index.js":false,"./subMonths/index.js":false,"./subQuarters/index.js":false,"./subSeconds/index.js":false,"./subWeeks/index.js":false,"./subYears/index.js":false,"./toDate/index.js":"fsust","./weeksToDays/index.js":false,"./yearsToMonths/index.js":false,"./yearsToQuarters/index.js":false,"./constants/index.js":"iOhcx","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7Tp9s":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _indexJs = require("../_lib/toInteger/index.js");
@@ -3676,7 +3739,80 @@ function throwProtectedError(token, format, input) {
     else if (token === 'DD') throw new RangeError("Use `dd` instead of `DD` (in `".concat(format, "`) for formatting days of the month to the input `").concat(input, "`; see: https://git.io/fxCyr"));
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iOhcx":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"d31S3":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _indexJs = require("../toDate/index.js");
+var _indexJsDefault = parcelHelpers.interopDefault(_indexJs);
+var _indexJs1 = require("../_lib/requiredArgs/index.js");
+var _indexJsDefault1 = parcelHelpers.interopDefault(_indexJs1);
+function getDaysInMonth(dirtyDate) {
+    _indexJsDefault1.default(1, arguments);
+    var date = _indexJsDefault.default(dirtyDate);
+    var year = date.getFullYear();
+    var monthIndex = date.getMonth();
+    var lastDayOfMonth = new Date(0);
+    lastDayOfMonth.setFullYear(year, monthIndex + 1, 0);
+    lastDayOfMonth.setHours(0, 0, 0, 0);
+    return lastDayOfMonth.getDate();
+}
+exports.default = getDaysInMonth;
+
+},{"../toDate/index.js":"fsust","../_lib/requiredArgs/index.js":"9wUgQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lqSMT":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _indexJs = require("../toDate/index.js");
+var _indexJsDefault = parcelHelpers.interopDefault(_indexJs);
+var _indexJs1 = require("../setMonth/index.js");
+var _indexJsDefault1 = parcelHelpers.interopDefault(_indexJs1);
+var _indexJs2 = require("../_lib/toInteger/index.js");
+var _indexJsDefault2 = parcelHelpers.interopDefault(_indexJs2);
+var _indexJs3 = require("../_lib/requiredArgs/index.js");
+var _indexJsDefault3 = parcelHelpers.interopDefault(_indexJs3);
+function set(dirtyDate, values) {
+    _indexJsDefault3.default(2, arguments);
+    if (typeof values !== 'object' || values === null) throw new RangeError('values parameter must be an object');
+    var date = _indexJsDefault.default(dirtyDate); // Check if date is Invalid Date because Date.prototype.setFullYear ignores the value of Invalid Date
+    if (isNaN(date.getTime())) return new Date(NaN);
+    if (values.year != null) date.setFullYear(values.year);
+    if (values.month != null) date = _indexJsDefault1.default(date, values.month);
+    if (values.date != null) date.setDate(_indexJsDefault2.default(values.date));
+    if (values.hours != null) date.setHours(_indexJsDefault2.default(values.hours));
+    if (values.minutes != null) date.setMinutes(_indexJsDefault2.default(values.minutes));
+    if (values.seconds != null) date.setSeconds(_indexJsDefault2.default(values.seconds));
+    if (values.milliseconds != null) date.setMilliseconds(_indexJsDefault2.default(values.milliseconds));
+    return date;
+}
+exports.default = set;
+
+},{"../toDate/index.js":"fsust","../setMonth/index.js":"8IC8x","../_lib/toInteger/index.js":"f7kKX","../_lib/requiredArgs/index.js":"9wUgQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8IC8x":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _indexJs = require("../_lib/toInteger/index.js");
+var _indexJsDefault = parcelHelpers.interopDefault(_indexJs);
+var _indexJs1 = require("../toDate/index.js");
+var _indexJsDefault1 = parcelHelpers.interopDefault(_indexJs1);
+var _indexJs2 = require("../getDaysInMonth/index.js");
+var _indexJsDefault2 = parcelHelpers.interopDefault(_indexJs2);
+var _indexJs3 = require("../_lib/requiredArgs/index.js");
+var _indexJsDefault3 = parcelHelpers.interopDefault(_indexJs3);
+function setMonth(dirtyDate, dirtyMonth) {
+    _indexJsDefault3.default(2, arguments);
+    var date = _indexJsDefault1.default(dirtyDate);
+    var month = _indexJsDefault.default(dirtyMonth);
+    var year = date.getFullYear();
+    var day = date.getDate();
+    var dateWithDesiredMonth = new Date(0);
+    dateWithDesiredMonth.setFullYear(year, month, 15);
+    dateWithDesiredMonth.setHours(0, 0, 0, 0);
+    var daysInMonth = _indexJsDefault2.default(dateWithDesiredMonth); // Set the last day of the new month
+    // if the original date was the last day of the longer month
+    date.setMonth(month, Math.min(day, daysInMonth));
+    return date;
+}
+exports.default = setMonth;
+
+},{"../_lib/toInteger/index.js":"f7kKX","../toDate/index.js":"fsust","../getDaysInMonth/index.js":"d31S3","../_lib/requiredArgs/index.js":"9wUgQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iOhcx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "daysInWeek", ()=>daysInWeek
@@ -3716,6 +3852,157 @@ var quartersInYear = 4;
 var secondsInHour = 3600;
 var secondsInMinute = 60;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["3v14N","5wnyu"], "5wnyu", "parcelRequire25d8")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"c8bBu":[function(require,module,exports) {
+(function(global, factory) {
+    module.exports = factory();
+})(this, function() {
+    'use strict';
+    /* eslint-disable no-var */ function assign(target) {
+        for(var i = 1; i < arguments.length; i++){
+            var source = arguments[i];
+            for(var key in source)target[key] = source[key];
+        }
+        return target;
+    }
+    /* eslint-enable no-var */ /* eslint-disable no-var */ var defaultConverter = {
+        read: function(value) {
+            if (value[0] === '"') value = value.slice(1, -1);
+            return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
+        },
+        write: function(value) {
+            return encodeURIComponent(value).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent);
+        }
+    };
+    /* eslint-enable no-var */ /* eslint-disable no-var */ function init(converter1, defaultAttributes) {
+        function set(key, value, attributes) {
+            if (typeof document === 'undefined') return;
+            attributes = assign({}, defaultAttributes, attributes);
+            if (typeof attributes.expires === 'number') attributes.expires = new Date(Date.now() + attributes.expires * 864e5);
+            if (attributes.expires) attributes.expires = attributes.expires.toUTCString();
+            key = encodeURIComponent(key).replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent).replace(/[()]/g, escape);
+            var stringifiedAttributes = '';
+            for(var attributeName in attributes){
+                if (!attributes[attributeName]) continue;
+                stringifiedAttributes += '; ' + attributeName;
+                if (attributes[attributeName] === true) continue;
+                // Considers RFC 6265 section 5.2:
+                // ...
+                // 3.  If the remaining unparsed-attributes contains a %x3B (";")
+                //     character:
+                // Consume the characters of the unparsed-attributes up to,
+                // not including, the first %x3B (";") character.
+                // ...
+                stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+            }
+            return document.cookie = key + '=' + converter1.write(value, key) + stringifiedAttributes;
+        }
+        function get(key) {
+            if (typeof document === 'undefined' || arguments.length && !key) return;
+            // To prevent the for loop in the first place assign an empty array
+            // in case there are no cookies at all.
+            var cookies = document.cookie ? document.cookie.split('; ') : [];
+            var jar = {};
+            for(var i = 0; i < cookies.length; i++){
+                var parts = cookies[i].split('=');
+                var value = parts.slice(1).join('=');
+                try {
+                    var foundKey = decodeURIComponent(parts[0]);
+                    jar[foundKey] = converter1.read(value, foundKey);
+                    if (key === foundKey) break;
+                } catch (e) {}
+            }
+            return key ? jar[key] : jar;
+        }
+        return Object.create({
+            set: set,
+            get: get,
+            remove: function(key, attributes) {
+                set(key, '', assign({}, attributes, {
+                    expires: -1
+                }));
+            },
+            withAttributes: function(attributes) {
+                return init(this.converter, assign({}, this.attributes, attributes));
+            },
+            withConverter: function(converter) {
+                return init(assign({}, this.converter, converter), this.attributes);
+            }
+        }, {
+            attributes: {
+                value: Object.freeze(defaultAttributes)
+            },
+            converter: {
+                value: Object.freeze(converter1)
+            }
+        });
+    }
+    var api = init(defaultConverter, {
+        path: '/'
+    });
+    /* eslint-enable no-var */ return api;
+});
+
+},{}],"hqX08":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _constantsJs = require("./constants.js");
+var _mainJs = require("./main.js");
+function getToken() {
+    return _mainJs.getCookie(_constantsJs.SERVER.COOKIE_TOKEN_NAME);
+}
+exports.default = {
+    async post (url, body = {}, headers = {}) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${getToken()}`
+            },
+            body: JSON.stringify(body)
+        };
+        try {
+            const res = await fetch(url, options);
+            if (res.status != 200) throw Error(res.statusText);
+            return await res.json();
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    },
+    async get (url, params = {}, headers = {}) {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${getToken()}`
+            }
+        };
+        try {
+            const res = await fetch(url, options);
+            if (res.status != 200) throw Error(res.statusText);
+            return await res.json();
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    },
+    async patch (url, body = {}, headers = {}) {
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${getToken()}`
+            },
+            body: JSON.stringify(body)
+        };
+        try {
+            const res = await fetch(url, options);
+            if (res.status != 200) throw Error(res.statusText);
+            return await res.json();
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+};
+
+},{"./constants.js":"31o3C","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./main.js":"5wnyu"}]},["3v14N","5wnyu"], "5wnyu", "parcelRequire25d8")
 
 //# sourceMappingURL=index.6441881b.js.map

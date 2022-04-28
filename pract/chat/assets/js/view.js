@@ -20,11 +20,11 @@ UI_ELEMENTS.DIALOGS.OVERLAY.addEventListener('click', () => {
 	if (UI_ELEMENTS.DIALOGS.OVERLAY.classList.contains('block')) return;
 	closeAllModals();
 });
-function closeAllModals() {
+export function closeAllModals() {
 	const modals = document.querySelectorAll('.dialog.active');
 	modals.forEach(modal => {
 		closeModal(modal);
-	});
+	});f
 }
 
 function openModal(modal) {
