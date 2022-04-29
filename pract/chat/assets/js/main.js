@@ -4,7 +4,7 @@ import {
 	showConfirmation,
 	closeAllModals,
 	createMessageBlocks,
-	openModal
+	openModal,
 } from './view.js';
 import Cookies from 'js-cookie';
 import requestService from './requestService.js';
@@ -86,12 +86,12 @@ async function confirmCode() {
 		}
 
 		setCookie(SERVER.COOKIE_TOKEN_NAME, token);
-		if(await getUserData()){
+		if (await getUserData()) {
 			UI_ELEMENTS.INPUTS.CONFIRMATION_COD.value = '';
 			closeAllModals();
 			uploadMessages();
-		}else{
-			clearCookie(SERVER.COOKIE_TOKEN_NAME, token)
+		} else {
+			clearCookie(SERVER.COOKIE_TOKEN_NAME, token);
 		}
 	} catch (e) {
 		alert(e);
@@ -102,6 +102,7 @@ async function getUserData() {
 		const res = await requestService.get(
 			'https://mighty-cove-31255.herokuapp.com/api/user/me'
 		);
+		if (!res) return;
 		USER.name = res?.name;
 		USER.id = res?._id;
 		USER.email = res?.email;
@@ -135,7 +136,7 @@ async function sendMessage() {
 	if (!msg_text) return;
 
 	if (!Object.keys(USER).length) {
-		await getUserData();
+		if (!(await getUserData())) return;
 	}
 	const message = {
 		text: msg_text,
@@ -143,14 +144,15 @@ async function sendMessage() {
 		user: { name: USER?.name },
 		_id: USER?.id,
 	};
+
 	createMessageBlock(message);
 }
 
 if (isAutorised()) {
 	uploadMessages();
 	getUserData();
-}else{
-	openModal(document.querySelector('#dialog-autorisation'))
+} else {
+	openModal(document.querySelector('#dialog-autorisation'));
 }
 
 export function isAutorised() {

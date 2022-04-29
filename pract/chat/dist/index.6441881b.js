@@ -619,6 +619,7 @@ async function confirmCode() {
 async function getUserData() {
     try {
         const res = await _requestServiceJsDefault.default.get('https://mighty-cove-31255.herokuapp.com/api/user/me');
+        if (!res) return;
         _constantsJs.USER.name = res?.name;
         _constantsJs.USER.id = res?._id;
         _constantsJs.USER.email = res?.email;
@@ -647,7 +648,9 @@ async function uploadMessages() {
 async function sendMessage() {
     let msg_text = _constantsJs.UI_ELEMENTS.INPUTS.MESSAGE.value;
     if (!msg_text) return;
-    if (!Object.keys(_constantsJs.USER).length) await getUserData();
+    if (!Object.keys(_constantsJs.USER).length) {
+        if (!await getUserData()) return;
+    }
     const message = {
         text: msg_text,
         createdAt: new Date(),
