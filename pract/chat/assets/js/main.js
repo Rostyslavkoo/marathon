@@ -1,19 +1,21 @@
-import { UI_ELEMENTS, SERVER } from './constants.js';
+import { UI_ELEMENTS, SERVER, USER } from './constants.js';
 import {
 	createMessageBlock,
 	showConfirmation,
 	closeAllModals,
+	createMessageBlocks,
+	openModal
 } from './view.js';
 import Cookies from 'js-cookie';
 import requestService from './requestService.js';
 
 UI_ELEMENTS.BUTTONS.SENT_MESSAGE.addEventListener('click', event => {
-	createMessageBlock();
+	sendMessage();
 	UI_ELEMENTS.INPUTS.MESSAGE.focus();
 });
 UI_ELEMENTS.INPUTS.MESSAGE.addEventListener('keypress', event => {
 	if (event.keyCode === 13) {
-		createMessageBlock();
+		sendMessage();
 		UI_ELEMENTS.INPUTS.MESSAGE.focus();
 	}
 });
@@ -54,7 +56,7 @@ async function changeChatName() {
 		};
 		const res = await requestService.patch(SERVER.URL, options);
 		console.log(await getUserData());
-		UI_ELEMENTS.INPUTS.CHAT_NAME.value = ''
+		UI_ELEMENTS.INPUTS.CHAT_NAME.value = '';
 		closeAllModals();
 	} catch (e) {
 		alert(e);
@@ -82,19 +84,27 @@ async function confirmCode() {
 			alert('Enter a code');
 			return;
 		}
+
 		setCookie(SERVER.COOKIE_TOKEN_NAME, token);
-		console.log(await getUserData());
-		UI_ELEMENTS.INPUTS.CONFIRMATION_COD.value = '';
-		closeAllModals();
+		if(await getUserData()){
+			UI_ELEMENTS.INPUTS.CONFIRMATION_COD.value = '';
+			closeAllModals();
+			uploadMessages();
+		}else{
+			clearCookie(SERVER.COOKIE_TOKEN_NAME, token)
+		}
 	} catch (e) {
 		alert(e);
 	}
 }
 async function getUserData() {
 	try {
-		const res = requestService.get(
+		const res = await requestService.get(
 			'https://mighty-cove-31255.herokuapp.com/api/user/me'
 		);
+		USER.name = res?.name;
+		USER.id = res?._id;
+		USER.email = res?.email;
 		return res;
 	} catch (e) {
 		alert(e);
@@ -108,4 +118,41 @@ export function getCookie(name) {
 }
 function clearCookie(name) {
 	Cookies.remove(name);
+}
+
+async function uploadMessages() {
+	try {
+		const res = await requestService.get(
+			'https://mighty-cove-31255.herokuapp.com/api/messages'
+		);
+		createMessageBlocks(res.messages);
+	} catch (e) {
+		alert(e);
+	}
+}
+async function sendMessage() {
+	let msg_text = UI_ELEMENTS.INPUTS.MESSAGE.value;
+	if (!msg_text) return;
+
+	if (!Object.keys(USER).length) {
+		await getUserData();
+	}
+	const message = {
+		text: msg_text,
+		createdAt: new Date(),
+		user: { name: USER?.name },
+		_id: USER?.id,
+	};
+	createMessageBlock(message);
+}
+
+if (isAutorised()) {
+	uploadMessages();
+	getUserData();
+}else{
+	openModal(document.querySelector('#dialog-autorisation'))
+}
+
+export function isAutorised() {
+	return getCookie(SERVER.COOKIE_TOKEN_NAME);
 }

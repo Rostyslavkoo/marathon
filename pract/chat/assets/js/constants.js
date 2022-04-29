@@ -22,9 +22,10 @@ const UI_ELEMENTS = {
 		TEMPLATE: document.querySelector('#msg-block'),
 	},
 };
+const USER = {};
 const SERVER = {
 	URL: 'https://mighty-cove-31255.herokuapp.com/api/user',
-	COOKIE_TOKEN_NAME:'autorization_token'
+	COOKIE_TOKEN_NAME: 'autorization_token',
 };
 
-export { UI_ELEMENTS, SERVER };
+export { UI_ELEMENTS, SERVER, USER };

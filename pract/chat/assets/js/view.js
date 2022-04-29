@@ -1,5 +1,6 @@
-import { UI_ELEMENTS } from './constants.js';
+import { UI_ELEMENTS,USER } from './constants.js';
 import { format } from 'date-fns';
+import parseISO from 'date-fns/parseISO'
 
 scrollToBottom();
 
@@ -24,10 +25,11 @@ export function closeAllModals() {
 	const modals = document.querySelectorAll('.dialog.active');
 	modals.forEach(modal => {
 		closeModal(modal);
-	});f
+	});
+	f;
 }
 
-function openModal(modal) {
+export function openModal(modal) {
 	if (modal === null) return;
 	modal.classList.add('active');
 	UI_ELEMENTS.DIALOGS.OVERLAY.classList.add('active');
@@ -38,16 +40,23 @@ function closeModal(modal) {
 	modal.classList.remove('active');
 	UI_ELEMENTS.DIALOGS.OVERLAY.classList.remove('active');
 }
-export function createMessageBlock() {
-	let msg = UI_ELEMENTS.INPUTS.MESSAGE.value;
-	if (!msg) return;
+
+export function createMessageBlock({ text, createdAt, user: { name },_id:id }) {
+	const isAuthor = id === USER?.id
+	console.log(isAuthor)
 	let element = document.createElement('div');
 	element.append(UI_ELEMENTS.MESSAGE.TEMPLATE.content.cloneNode(true));
-	element.querySelector('#msg-text').textContent = msg;
-	element.querySelector('#author').textContent = 'me:';
-	element.querySelector('#msg-time').textContent = format(new Date(), '	HH:mm');
-
+	element.querySelector('#msg-text').textContent = text;
+	element.querySelector('#author').textContent = `${name}:`;
+	if(isAuthor){
+		element.querySelector('.msg-block').classList.add('author','sent-msg')
+	}
+	
+	let getTime = isAuthor ? createdAt : parseISO(createdAt) 
+	element.querySelector('#msg-time').textContent = format(getTime,'	HH:mm');
+	// element.querySelector('#msg-time').textContent = createdAt;
 	UI_ELEMENTS.MESSAGE.MSG_MAIN.append(element);
+
 	clearInput(UI_ELEMENTS.INPUTS.MESSAGE);
 	scrollToBottom();
 }
@@ -62,7 +71,14 @@ function clearInput(input) {
 	input.value = '';
 }
 
-export function showConfirmation(){
-	const modal = document.querySelector('#dialog-confirmation')
-	openModal(modal)
+export function showConfirmation() {
+	const modal = document.querySelector('#dialog-confirmation');
+	openModal(modal);
+}
+
+export function createMessageBlocks(messages) {
+	messages.splice(10);
+	messages.forEach(message => {
+		createMessageBlock(message);
+	});
 }

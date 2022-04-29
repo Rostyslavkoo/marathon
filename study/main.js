@@ -1,11 +1,11 @@
-function test() {
-	while (true) {
-		let windowRelativeBottom =
-			document.documentElement.getBoundingClientRect().bottom;
-		if (windowRelativeBottom > document.documentElement.clientHeight + 100)
-			break;
-		document.body.insertAdjacentHTML('beforeend', `<p>Date: ${new Date()}</p>`);
-	}
-}
+let div = document.createElement('div');
 
-test()
+div.style.overflowY = 'scroll';
+div.style.width = '50px';
+div.style.height = '50px';
+
+document.body.append(div)
+
+let scrollWidth = div.offsetWidth - div.clientWidth;
+div.remove()
+console.log(scrollWidth)
