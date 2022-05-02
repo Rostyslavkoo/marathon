@@ -74,7 +74,8 @@ export function showConfirmation() {
 }
 
 export function createMessageBlocks(messages) {
-	messages.forEach(message => {
+	
+	messages.reverse().forEach(message => {
 		createMessageBlock(message);
 	});
 }

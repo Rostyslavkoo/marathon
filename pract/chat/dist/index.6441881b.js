@@ -812,12 +812,12 @@ function showConfirmation() {
     openModal(modal);
 }
 function createMessageBlocks(messages) {
-    messages.forEach((message)=>{
+    messages.reverse().forEach((message)=>{
         createMessageBlock(message);
     });
 }
 
-},{"./constants.js":"31o3C","date-fns":"9yHCA","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","date-fns/parseISO":"3UpeK"}],"9yHCA":[function(require,module,exports) {
+},{"./constants.js":"31o3C","date-fns":"9yHCA","date-fns/parseISO":"3UpeK","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9yHCA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // This file is generated automatically by `scripts/build/indices.js`. Please, don't change it.
