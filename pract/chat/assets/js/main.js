@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 import requestService from './requestService.js';
 
 const SOCKET = new WebSocket(
-	`ws://mighty-cove-31255.herokuapp.com/websockets?${getCookie(
+	`wss://mighty-cove-31255.herokuapp.com/websockets?${getCookie(
 		SERVER.COOKIE_TOKEN_NAME
 	)}`
 );
