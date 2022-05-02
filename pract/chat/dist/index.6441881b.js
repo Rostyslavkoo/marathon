@@ -538,6 +538,7 @@ var _jsCookie = require("js-cookie");
 var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
 var _requestServiceJs = require("./requestService.js");
 var _requestServiceJsDefault = parcelHelpers.interopDefault(_requestServiceJs);
+const SOCKET = new WebSocket(`ws://mighty-cove-31255.herokuapp.com/websockets?${getCookie(_constantsJs.SERVER.COOKIE_TOKEN_NAME)}`);
 _constantsJs.UI_ELEMENTS.BUTTONS.SENT_MESSAGE.addEventListener('click', (event)=>{
     sendMessage();
     _constantsJs.UI_ELEMENTS.INPUTS.MESSAGE.focus();
@@ -648,23 +649,22 @@ async function uploadMessages() {
 async function sendMessage() {
     let msg_text = _constantsJs.UI_ELEMENTS.INPUTS.MESSAGE.value;
     if (!msg_text) return;
-    if (!Object.keys(_constantsJs.USER).length) {
-        if (!await getUserData()) return;
-    }
-    const message = {
-        text: msg_text,
-        createdAt: new Date(),
-        user: {
-            name: _constantsJs.USER?.name
-        },
-        _id: _constantsJs.USER?.id
-    };
-    _viewJs.createMessageBlock(message);
+    SOCKET.send(JSON.stringify({
+        text: msg_text
+    }));
 }
-if (isAutorised()) {
-    uploadMessages();
-    getUserData();
-} else _viewJs.openModal(document.querySelector('#dialog-autorisation'));
+SOCKET.onopen = function(e) {
+    console.log(e);
+};
+SOCKET.onmessage = function(e) {
+    const message = JSON.parse(e.data);
+    _viewJs.createMessageBlock(message);
+};
+SOCKET.onerror = function(error) {
+    alert(`[error] ${error.message}`);
+};
+if (isAutorised()) getUserData();
+else _viewJs.openModal(document.querySelector('#dialog-autorisation'));
 function isAutorised() {
     return getCookie(_constantsJs.SERVER.COOKIE_TOKEN_NAME);
 }
@@ -789,17 +789,14 @@ function closeModal(modal) {
     modal.classList.remove('active');
     _constantsJs.UI_ELEMENTS.DIALOGS.OVERLAY.classList.remove('active');
 }
-function createMessageBlock({ text , createdAt , user: { name  } , _id: id  }) {
-    const isAuthor = id === _constantsJs.USER?.id;
-    console.log(isAuthor);
+function createMessageBlock({ text , createdAt , user: { name , email  }  }) {
+    const isAuthor = email === _constantsJs.USER?.email;
     let element = document.createElement('div');
     element.append(_constantsJs.UI_ELEMENTS.MESSAGE.TEMPLATE.content.cloneNode(true));
     element.querySelector('#msg-text').textContent = text;
     element.querySelector('#author').textContent = `${name}:`;
     if (isAuthor) element.querySelector('.msg-block').classList.add('author', 'sent-msg');
-    let getTime = isAuthor ? createdAt : _parseISODefault.default(createdAt);
-    element.querySelector('#msg-time').textContent = _dateFns.format(getTime, '	HH:mm');
-    // element.querySelector('#msg-time').textContent = createdAt;
+    element.querySelector('#msg-time').textContent = _dateFns.format(_parseISODefault.default(createdAt), '	HH:mm');
     _constantsJs.UI_ELEMENTS.MESSAGE.MSG_MAIN.append(element);
     clearInput(_constantsJs.UI_ELEMENTS.INPUTS.MESSAGE);
     scrollToBottom();
@@ -815,7 +812,6 @@ function showConfirmation() {
     openModal(modal);
 }
 function createMessageBlocks(messages) {
-    messages.splice(10);
     messages.forEach((message)=>{
         createMessageBlock(message);
     });

@@ -1,3 +1,4 @@
+
 const UI_ELEMENTS = {
 	BUTTONS: {
 		SETTINGS: document.querySelector('.btn-settings'),
@@ -28,4 +29,4 @@ const SERVER = {
 	COOKIE_TOKEN_NAME: 'autorization_token',
 };
 
-export { UI_ELEMENTS, SERVER, USER };
+export { UI_ELEMENTS, SERVER, USER};

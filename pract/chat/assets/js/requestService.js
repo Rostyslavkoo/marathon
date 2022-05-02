@@ -1,9 +1,10 @@
 import { SERVER } from './constants.js';
 import { getCookie } from './main.js';
 
-function getToken() {
+ function getToken() {
 	return getCookie(SERVER.COOKIE_TOKEN_NAME);
 }
+
 export default {
 	async post(url, body = {}, headers = {}) {
 		const options = {

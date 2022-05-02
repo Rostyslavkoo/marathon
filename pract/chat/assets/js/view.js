@@ -41,9 +41,8 @@ function closeModal(modal) {
 	UI_ELEMENTS.DIALOGS.OVERLAY.classList.remove('active');
 }
 
-export function createMessageBlock({ text, createdAt, user: { name },_id:id }) {
-	const isAuthor = id === USER?.id
-	console.log(isAuthor)
+export function createMessageBlock({ text, createdAt, user: { name,email }}) {
+	const isAuthor = email === USER?.email
 	let element = document.createElement('div');
 	element.append(UI_ELEMENTS.MESSAGE.TEMPLATE.content.cloneNode(true));
 	element.querySelector('#msg-text').textContent = text;
@@ -52,9 +51,7 @@ export function createMessageBlock({ text, createdAt, user: { name },_id:id }) {
 		element.querySelector('.msg-block').classList.add('author','sent-msg')
 	}
 	
-	let getTime = isAuthor ? createdAt : parseISO(createdAt) 
-	element.querySelector('#msg-time').textContent = format(getTime,'	HH:mm');
-	// element.querySelector('#msg-time').textContent = createdAt;
+	element.querySelector('#msg-time').textContent = format(parseISO(createdAt) ,'	HH:mm');
 	UI_ELEMENTS.MESSAGE.MSG_MAIN.append(element);
 
 	clearInput(UI_ELEMENTS.INPUTS.MESSAGE);
@@ -77,7 +74,6 @@ export function showConfirmation() {
 }
 
 export function createMessageBlocks(messages) {
-	messages.splice(10);
 	messages.forEach(message => {
 		createMessageBlock(message);
 	});

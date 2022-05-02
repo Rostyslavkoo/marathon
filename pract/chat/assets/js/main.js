@@ -9,6 +9,12 @@ import {
 import Cookies from 'js-cookie';
 import requestService from './requestService.js';
 
+const SOCKET = new WebSocket(
+	`ws://mighty-cove-31255.herokuapp.com/websockets?${getCookie(
+		SERVER.COOKIE_TOKEN_NAME
+	)}`
+);
+
 UI_ELEMENTS.BUTTONS.SENT_MESSAGE.addEventListener('click', event => {
 	sendMessage();
 	UI_ELEMENTS.INPUTS.MESSAGE.focus();
@@ -134,22 +140,25 @@ async function uploadMessages() {
 async function sendMessage() {
 	let msg_text = UI_ELEMENTS.INPUTS.MESSAGE.value;
 	if (!msg_text) return;
-
-	if (!Object.keys(USER).length) {
-		if (!(await getUserData())) return;
-	}
-	const message = {
-		text: msg_text,
-		createdAt: new Date(),
-		user: { name: USER?.name },
-		_id: USER?.id,
-	};
-
-	createMessageBlock(message);
+	SOCKET.send(
+		JSON.stringify({
+			text: msg_text,
+		})
+	);
 }
+SOCKET.onopen = function (e) {
+	console.log(e);
+};
 
+SOCKET.onmessage = function (e) {
+	const message = JSON.parse(e.data);
+	createMessageBlock(message);
+};
+
+SOCKET.onerror = function (error) {
+	alert(`[error] ${error.message}`);
+};
 if (isAutorised()) {
-	uploadMessages();
 	getUserData();
 } else {
 	openModal(document.querySelector('#dialog-autorisation'));
