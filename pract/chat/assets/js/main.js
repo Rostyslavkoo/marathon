@@ -95,7 +95,8 @@ async function confirmCode() {
 		if (await getUserData()) {
 			UI_ELEMENTS.INPUTS.CONFIRMATION_COD.value = '';
 			closeAllModals();
-			uploadMessages();
+			await uploadMessages();
+			UI_ELEMENTS.INPUTS.MESSAGE.removeAttribute('disabled')
 		} else {
 			clearCookie(SERVER.COOKIE_TOKEN_NAME, token);
 		}
@@ -159,9 +160,14 @@ SOCKET.onerror = function (error) {
 	alert(`[error] ${error.message}`);
 };
 
+SOCKET.onclose = function (e){
+	alert(`[close] ${e}`);
+}
 if (isAutorised()) {
-	uploadMessages()
-	getUserData();
+	await getUserData();
+	await uploadMessages()
+	UI_ELEMENTS.INPUTS.MESSAGE.removeAttribute('disabled')
+
 } else {
 	openModal(document.querySelector('#dialog-autorisation'));
 }

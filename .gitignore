@@ -1,11 +1,11 @@
 
 .DS_Store
+pract/chat
 pract/forecast/node_modules
 pract/forecast/dist
 pract/forecast/.parcel-cache
 pract/chat/.parcel-cache
 pract/chat/node_modules
 pract/countdown
-pract/chat/.parcel-cache/lock.mdb
+*.mdb
 pract/chat/.parcel-cache/data.mdb
-
