@@ -663,8 +663,10 @@ SOCKET.onmessage = function(e) {
 SOCKET.onerror = function(error) {
     alert(`[error] ${error.message}`);
 };
-if (isAutorised()) getUserData();
-else _viewJs.openModal(document.querySelector('#dialog-autorisation'));
+if (isAutorised()) {
+    uploadMessages();
+    getUserData();
+} else _viewJs.openModal(document.querySelector('#dialog-autorisation'));
 function isAutorised() {
     return getCookie(_constantsJs.SERVER.COOKIE_TOKEN_NAME);
 }
@@ -812,7 +814,8 @@ function showConfirmation() {
     openModal(modal);
 }
 function createMessageBlocks(messages) {
-    messages.reverse().forEach((message)=>{
+    const splitMSG = messages.reverse().splice(0, 50);
+    splitMSG.reverse().forEach((message)=>{
         createMessageBlock(message);
     });
 }

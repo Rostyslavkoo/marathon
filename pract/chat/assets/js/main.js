@@ -158,7 +158,9 @@ SOCKET.onmessage = function (e) {
 SOCKET.onerror = function (error) {
 	alert(`[error] ${error.message}`);
 };
+
 if (isAutorised()) {
+	uploadMessages()
 	getUserData();
 } else {
 	openModal(document.querySelector('#dialog-autorisation'));

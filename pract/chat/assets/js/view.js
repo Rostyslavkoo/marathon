@@ -1,6 +1,6 @@
-import { UI_ELEMENTS,USER } from './constants.js';
+import { UI_ELEMENTS, USER } from './constants.js';
 import { format } from 'date-fns';
-import parseISO from 'date-fns/parseISO'
+import parseISO from 'date-fns/parseISO';
 
 scrollToBottom();
 
@@ -41,17 +41,20 @@ function closeModal(modal) {
 	UI_ELEMENTS.DIALOGS.OVERLAY.classList.remove('active');
 }
 
-export function createMessageBlock({ text, createdAt, user: { name,email }}) {
-	const isAuthor = email === USER?.email
+export function createMessageBlock({ text, createdAt, user: { name, email } }) {
+	const isAuthor = email === USER?.email;
 	let element = document.createElement('div');
 	element.append(UI_ELEMENTS.MESSAGE.TEMPLATE.content.cloneNode(true));
 	element.querySelector('#msg-text').textContent = text;
 	element.querySelector('#author').textContent = `${name}:`;
-	if(isAuthor){
-		element.querySelector('.msg-block').classList.add('author','sent-msg')
+	if (isAuthor) {
+		element.querySelector('.msg-block').classList.add('author', 'sent-msg');
 	}
-	
-	element.querySelector('#msg-time').textContent = format(parseISO(createdAt) ,'	HH:mm');
+
+	element.querySelector('#msg-time').textContent = format(
+		parseISO(createdAt),
+		'	HH:mm'
+	);
 	UI_ELEMENTS.MESSAGE.MSG_MAIN.append(element);
 
 	clearInput(UI_ELEMENTS.INPUTS.MESSAGE);
@@ -74,8 +77,8 @@ export function showConfirmation() {
 }
 
 export function createMessageBlocks(messages) {
-	
-	messages.reverse().forEach(message => {
+	const splitMSG = messages.reverse().splice(0, 50);
+	splitMSG.reverse().forEach(message => {
 		createMessageBlock(message);
 	});
 }
