@@ -1,7 +1,7 @@
 import { UI_ELEMENTS, USER } from './constants.js';
 import { format } from 'date-fns';
 import parseISO from 'date-fns/parseISO';
-
+import { ta } from 'date-fns/locale';
 scrollToBottom();
 
 UI_ELEMENTS.DIALOGS.TARGET_DIALOGS.forEach(button => {
@@ -41,7 +41,10 @@ function closeModal(modal) {
 	UI_ELEMENTS.DIALOGS.OVERLAY.classList.remove('active');
 }
 
-export function createMessageBlock({ text, createdAt, user: { name, email } }) {
+export function createMessageBlock(
+	{ text, createdAt, user: { name, email } },
+	paginate
+) {
 	const isAuthor = email === USER?.email;
 	let element = document.createElement('div');
 	element.append(UI_ELEMENTS.MESSAGE.TEMPLATE.content.cloneNode(true));
@@ -50,23 +53,37 @@ export function createMessageBlock({ text, createdAt, user: { name, email } }) {
 	if (isAuthor) {
 		element.querySelector('.msg-block').classList.add('author', 'sent-msg');
 	}
-
 	element.querySelector('#msg-time').textContent = format(
 		parseISO(createdAt),
 		'	HH:mm'
 	);
-	UI_ELEMENTS.MESSAGE.MSG_MAIN.append(element);
+	if (paginate) {
+		UI_ELEMENTS.MESSAGE.MSG_MAIN.prepend(element);
+	} else {
+		UI_ELEMENTS.MESSAGE.MSG_MAIN.append(element);
+		scrollToBottom();
+	}
 
 	clearInput(UI_ELEMENTS.INPUTS.MESSAGE);
-	scrollToBottom();
 }
 
 function scrollToBottom() {
+	document.querySelector('.wrapper').scrollTo({
+		bottom: 0,
+		top: document.querySelector('.wrapper').scrollHeight,
+		behavior: 'smooth',
+	});
+}
+function scrollToMSG(target) {
 	document
 		.querySelector('.wrapper')
-		.scrollTo(0, document.querySelector('.wrapper').scrollHeight);
+		.scrollTo(
+			0,
+			target.getBoundingClientRect().y -
+				document.querySelector('.wrapper').getBoundingClientRect().height -
+				target.getBoundingClientRect().height
+		);
 }
-
 function clearInput(input) {
 	input.value = '';
 }
@@ -76,9 +93,13 @@ export function showConfirmation() {
 	openModal(modal);
 }
 
-export function createMessageBlocks(messages) {
-	const splitMSG = messages.reverse().splice(0, 50);
-	splitMSG.reverse().forEach(message => {
-		createMessageBlock(message);
+export function createMessageBlocks(messages, paginate = false, scrollTarget) {
+	messages.forEach(message => {
+		createMessageBlock(message, paginate);
 	});
+	if (paginate) {
+		scrollToMSG(scrollTarget);
+	} else {
+		scrollToBottom();
+	}
 }

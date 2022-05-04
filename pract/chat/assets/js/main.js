@@ -1,4 +1,4 @@
-import { UI_ELEMENTS, SERVER, USER } from './constants.js';
+import { UI_ELEMENTS, SERVER, USER, PAGINATE } from './constants.js';
 import {
 	createMessageBlock,
 	showConfirmation,
@@ -14,6 +14,10 @@ const SOCKET = new WebSocket(
 		SERVER.COOKIE_TOKEN_NAME
 	)}`
 );
+
+export function isAutorised() {
+	return getCookie(SERVER.COOKIE_TOKEN_NAME);
+}
 
 UI_ELEMENTS.BUTTONS.SENT_MESSAGE.addEventListener('click', event => {
 	sendMessage();
@@ -49,7 +53,21 @@ UI_ELEMENTS.INPUTS.CHAT_NAME.addEventListener('keypress', event => {
 UI_ELEMENTS.BUTTONS.SEND_USER_NAME.addEventListener('click', () => {
 	changeChatName();
 });
+UI_ELEMENTS.BUTTONS.LOG_OUT.addEventListener('click', event => {
+	clearCookie(SERVER.COOKIE_TOKEN_NAME)
+	UI_ELEMENTS.MESSAGE.MSG_MAIN.querySelectorAll('.msg-block').forEach(msg => msg.remove())
+	checkAutoridation();
+});
 
+UI_ELEMENTS.MESSAGE.MSG_MAIN.addEventListener('scroll', event => {
+	if (UI_ELEMENTS.MESSAGE.MSG_MAIN.scrollTop === 0) {
+		const block =
+			UI_ELEMENTS.MESSAGE.MSG_MAIN.querySelectorAll('.msg-block')[0];
+		setTimeout(() => {
+			createMessageBlocks(onPaginate(SERVER.HISTORY), true, block);
+		}, 1000);
+	}
+});
 async function changeChatName() {
 	try {
 		const name = UI_ELEMENTS.INPUTS.CHAT_NAME.value;
@@ -60,8 +78,8 @@ async function changeChatName() {
 		const options = {
 			name: name,
 		};
-		const res = await requestService.patch(SERVER.URL, options);
-		console.log(await getUserData());
+		await requestService.patch(SERVER.URL, options);
+		await getUserData();
 		UI_ELEMENTS.INPUTS.CHAT_NAME.value = '';
 		closeAllModals();
 	} catch (e) {
@@ -90,13 +108,12 @@ async function confirmCode() {
 			alert('Enter a code');
 			return;
 		}
-
 		setCookie(SERVER.COOKIE_TOKEN_NAME, token);
 		if (await getUserData()) {
 			UI_ELEMENTS.INPUTS.CONFIRMATION_COD.value = '';
 			closeAllModals();
 			await uploadMessages();
-			UI_ELEMENTS.INPUTS.MESSAGE.removeAttribute('disabled')
+			UI_ELEMENTS.INPUTS.MESSAGE.removeAttribute('disabled');
 		} else {
 			clearCookie(SERVER.COOKIE_TOKEN_NAME, token);
 		}
@@ -133,11 +150,22 @@ async function uploadMessages() {
 		const res = await requestService.get(
 			'https://mighty-cove-31255.herokuapp.com/api/messages'
 		);
-		createMessageBlocks(res.messages);
+		SERVER.HISTORY = res.messages;
+		createMessageBlocks(onPaginate(SERVER.HISTORY));
 	} catch (e) {
 		alert(e);
 	}
 }
+function checkAutoridation() {
+	if (isAutorised()) {
+		getUserData();
+		uploadMessages();
+		UI_ELEMENTS.INPUTS.MESSAGE.removeAttribute('disabled');
+	} else {
+		openModal(document.querySelector('#dialog-autorisation'));
+	}
+}
+
 async function sendMessage() {
 	let msg_text = UI_ELEMENTS.INPUTS.MESSAGE.value;
 	if (!msg_text) return;
@@ -160,18 +188,19 @@ SOCKET.onerror = function (error) {
 	alert(`[error] ${error.message}`);
 };
 
-SOCKET.onclose = function (e){
+SOCKET.onclose = function (e) {
 	alert(`[close] ${e}`);
-}
-if (isAutorised()) {
-	await getUserData();
-	await uploadMessages()
-	UI_ELEMENTS.INPUTS.MESSAGE.removeAttribute('disabled')
+};
 
-} else {
-	openModal(document.querySelector('#dialog-autorisation'));
+export function onPaginate(arr) {
+	console.log(PAGINATE);
+	if (PAGINATE.PAGE * PAGINATE.LIMIT > arr.length) {
+		alert('the end');
+		return;
+	}
+	PAGINATE.OFFSET = PAGINATE.PAGE * PAGINATE.LIMIT;
+	PAGINATE.PAGE++;
+	return arr.splice(arr.length - PAGINATE.OFFSET, arr.length);
 }
 
-export function isAutorised() {
-	return getCookie(SERVER.COOKIE_TOKEN_NAME);
-}
+checkAutoridation();

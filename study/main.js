@@ -1,11 +1,11 @@
-let div = document.createElement('div');
-
-div.style.overflowY = 'scroll';
-div.style.width = '50px';
-div.style.height = '50px';
-
-document.body.append(div)
-
-let scrollWidth = div.offsetWidth - div.clientWidth;
-div.remove()
-console.log(scrollWidth)
+const title = document.querySelectorAll('li');
+title.forEach(li => {
+	const span = document.createElement('span')
+    li.prepend(span)
+    span.append(span.nextSibling)
+});
+tree.onclick = function (event) {
+	if (event.target.tagName != 'SPAN') return;
+	const childrenContainer = event.target.parentNode.querySelector('ul');
+	childrenContainer.hidden = !childrenContainer.hidden;
+};

@@ -1,4 +1,3 @@
-
 const UI_ELEMENTS = {
 	BUTTONS: {
 		SETTINGS: document.querySelector('.btn-settings'),
@@ -6,6 +5,7 @@ const UI_ELEMENTS = {
 		GET_CODE: document.querySelector('#get-code'),
 		ENTER_CODE: document.querySelector('#enter-code'),
 		SEND_USER_NAME: document.querySelector('#send-user-name'),
+		LOG_OUT: document.querySelector('#log-out'),
 	},
 	DIALOGS: {
 		TARGET_DIALOGS: document.querySelectorAll('[data-modal-target]'),
@@ -27,6 +27,12 @@ const USER = {};
 const SERVER = {
 	URL: 'https://mighty-cove-31255.herokuapp.com/api/user',
 	COOKIE_TOKEN_NAME: 'autorization_token',
+	HISTORY: [],
+};
+const PAGINATE = {
+	PAGE: 1,
+	LIMIT: 50,
+	OFFSET: 0,
 };
 
-export { UI_ELEMENTS, SERVER, USER};
+export { UI_ELEMENTS, SERVER, USER,PAGINATE };
