@@ -31,7 +31,7 @@ const SERVER = {
 };
 const PAGINATE = {
 	PAGE: 1,
-	LIMIT: 50,
+	LIMIT: 500,
 	OFFSET: 0,
 };
 

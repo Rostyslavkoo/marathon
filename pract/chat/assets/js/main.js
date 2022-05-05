@@ -8,6 +8,7 @@ import {
 } from './view.js';
 import Cookies from 'js-cookie';
 import requestService from './requestService.js';
+import { ar } from 'date-fns/locale';
 
 const SOCKET = new WebSocket(
 	`wss://mighty-cove-31255.herokuapp.com/websockets?${getCookie(
@@ -54,8 +55,10 @@ UI_ELEMENTS.BUTTONS.SEND_USER_NAME.addEventListener('click', () => {
 	changeChatName();
 });
 UI_ELEMENTS.BUTTONS.LOG_OUT.addEventListener('click', event => {
-	clearCookie(SERVER.COOKIE_TOKEN_NAME)
-	UI_ELEMENTS.MESSAGE.MSG_MAIN.querySelectorAll('.msg-block').forEach(msg => msg.remove())
+	clearCookie(SERVER.COOKIE_TOKEN_NAME);
+	UI_ELEMENTS.MESSAGE.MSG_MAIN.querySelectorAll('.msg-block').forEach(msg =>
+		msg.remove()
+	);
 	checkAutoridation();
 });
 
@@ -193,14 +196,16 @@ SOCKET.onclose = function (e) {
 };
 
 export function onPaginate(arr) {
-	console.log(PAGINATE);
-	if (PAGINATE.PAGE * PAGINATE.LIMIT > arr.length) {
-		alert('the end');
-		return;
-	}
+	// if (arr.length - PAGINATE.OFFSET <= 0) {
+	// 	alert('the end');
+	// 	return;
+	// }
 	PAGINATE.OFFSET = PAGINATE.PAGE * PAGINATE.LIMIT;
 	PAGINATE.PAGE++;
-	return arr.splice(arr.length - PAGINATE.OFFSET, arr.length);
+	return arr.slice(
+		arr.length - PAGINATE.OFFSET,
+		arr.length - PAGINATE.OFFSET + PAGINATE.LIMIT
+	);
 }
 
 checkAutoridation();
