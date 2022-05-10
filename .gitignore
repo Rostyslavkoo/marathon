@@ -6,6 +6,9 @@ pract/forecast/dist
 pract/forecast/.parcel-cache
 pract/chat/.parcel-cache
 pract/chat/node_modules
+ts-study/node_modules
+ts-study/dist
+ts-study/package-lock.json
 pract/countdown
 *.mdb
 pract/chat/.parcel-cache/data.mdb
