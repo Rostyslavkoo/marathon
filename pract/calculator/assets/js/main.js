@@ -13,9 +13,11 @@ function calcNumber(event, number1, number2) {
 	}
 	return 'unknown operation';
 }
+
 const HEADER_SIZE = {
 	17:'30px'
 };
+
 for (let i = 0; i <= 13; i++) {
 	HEADER_SIZE[i] = `${96 - 5 * i}px`;
 }
