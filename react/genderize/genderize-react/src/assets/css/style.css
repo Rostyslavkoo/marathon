@@ -34,7 +34,7 @@ body {
 	width: 100%;
 	height: 100vh;
 }
-button {
+.btn {
 	padding: 5px 10px;
 	border-radius: 5px;
 	background: unset;
@@ -46,7 +46,7 @@ button {
 	color: #ffff;
 	box-shadow: 1px 1px 1px 0px #4464d7;
 }
-button:active {
+.btn:active {
 	transition: 0.2s;
 	transform: scale(0.9);
 }

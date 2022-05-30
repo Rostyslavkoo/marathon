@@ -10,12 +10,11 @@ class Button extends React.Component {
 	}
 	render() {
 		return (
-			<button
+			<input
+				type='submit'
+				value={this.props.label}
 				className={this.props.className}
-				onClick={() => this.props.onClick()}
-			>
-				{this.props.label}
-			</button>
+			/>
 		);
 	}
 }
@@ -50,9 +49,14 @@ class Main extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { value: '', gender: '' };
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	onChangeInput(e) {
 		this.setState({ value: e.target.value, gender: '' });
+	}
+	handleSubmit(e) {
+		e.preventDefault();
+		this.onSent()
 	}
 	async onSent() {
 		try {
@@ -70,19 +74,17 @@ class Main extends React.Component {
 			<div className='container'>
 				<div>
 					<h2>Enter a name</h2>
-					<div className='d-flex jusitify-start align-start mt-1'>
-						<TexInput
-							value={this.state.value}
-							gender={this.state.gender}
-							label='Type a name'
-							onChange={e => this.onChangeInput(e)}
-						/>
-						<Button
-							label='Sent'
-							className='ml-1'
-							onClick={() => this.onSent()}
-						/>
-					</div>
+					<form onSubmit={this.handleSubmit}>
+						<div className='d-flex jusitify-start align-start mt-1'>
+							<TexInput
+								value={this.state.value}
+								gender={this.state.gender}
+								label='Type a name'
+								onChange={e => this.onChangeInput(e)}
+							/>
+							<Button label='Sent' className='ml-1 btn' />
+						</div>
+					</form>
 				</div>
 			</div>
 		);
