@@ -21,6 +21,12 @@ class Button extends React.Component {
 class TexInput extends React.Component {
 	constructor(props) {
 		super(props);
+		this.handleCange = this.handleCange.bind(this)
+
+	}
+	handleCange(e){
+		this.props.onTextChange(e.target.value)
+
 	}
 	render() {
 		return (
@@ -28,7 +34,7 @@ class TexInput extends React.Component {
 				<input
 					type='text'
 					placeholder={this.props.label}
-					onChange={e => this.props.onChange(e)}
+					onChange={this.handleCange}
 				/>
 				<div style={{ height: '30px' }}>
 					{this.props.value.length > 0 && this.props.value.length < 3 && (
@@ -50,9 +56,10 @@ class Main extends React.Component {
 		super(props);
 		this.state = { value: '', gender: '' };
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.onChangeInput = this.onChangeInput.bind(this);
 	}
 	onChangeInput(e) {
-		this.setState({ value: e.target.value, gender: '' });
+		this.setState({ value: e, gender: '' });
 	}
 	handleSubmit(e) {
 		e.preventDefault();
@@ -80,7 +87,7 @@ class Main extends React.Component {
 								value={this.state.value}
 								gender={this.state.gender}
 								label='Type a name'
-								onChange={e => this.onChangeInput(e)}
+								onTextChange={this.onChangeInput}
 							/>
 							<Button label='Sent' className='ml-1 btn' />
 						</div>
