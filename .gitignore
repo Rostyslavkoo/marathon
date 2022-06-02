@@ -6,6 +6,7 @@ pract/forecast/dist
 pract/forecast/.parcel-cache
 pract/chat/.parcel-cache
 pract/chat/node_modules
+pract/toDoList/node_modules
 ts-study/node_modules
 ts-study/dist
 ts-study/package-lock.json
