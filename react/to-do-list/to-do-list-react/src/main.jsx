@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import './assets/scss/common.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -10,9 +10,15 @@ function List(props) {
 		.filter(item => item.status === props.type)
 		.map((item, key) => (
 			<div key={key} className={item.done ? ' task task-done' : 'task'}>
-				<div className={item.done ? ' done-btn done' : 'done-btn'}></div>
+				<div
+					className={item.done ? ' done-btn done' : 'done-btn'}
+					onClick={() => props.onChangeStatus(item)}
+				></div>
 				<p>{item.value}</p>
-				<div className='delete-btn'></div>
+				<div
+					className='delete-btn'
+					onClick={() => props.onDeleteTask(item)}
+				></div>
 			</div>
 		));
 
@@ -50,7 +56,12 @@ function Header(props) {
 				onChangeTaskName={props.onChangeTaskName}
 				type={props.type}
 			/>
-			<List tasks={props.tasks} type={props.type} />
+			<List
+				tasks={props.tasks}
+				onChangeStatus={props.onChangeStatus}
+				onDeleteTask={props.onDeleteTask}
+				type={props.type}
+			/>
 		</div>
 	);
 }
@@ -75,6 +86,15 @@ function App() {
 		]);
 		changeTaskValue('', type);
 	}
+
+	function onChangeStatus(chosenItem) {
+		chosenItem.done = !chosenItem.done;
+		setTasks([{ chosenItem }, ...tasks]);
+	}
+	function onDeleteTask(chosenItem) {
+		setTasks([...tasks.filter(taskItem => taskItem.value !== chosenItem.value)]);
+		console.log(tasks);
+	}
 	function onChangeTaskName(e, type) {
 		changeTaskValue(e, type);
 	}
@@ -90,6 +110,8 @@ function App() {
 				placeholder='add important cases'
 				onAddTask={handleAddTask}
 				onChangeTaskName={onChangeTaskName}
+				onChangeStatus={onChangeStatus}
+				onDeleteTask={onDeleteTask}
 				tasks={tasks}
 			/>
 			<Header
@@ -97,6 +119,8 @@ function App() {
 				placeholder='add cases'
 				onAddTask={handleAddTask}
 				onChangeTaskName={onChangeTaskName}
+				onChangeStatus={onChangeStatus}
+				onDeleteTask={onDeleteTask}
 				tasks={tasks}
 				value={LowTaskValue}
 			/>
