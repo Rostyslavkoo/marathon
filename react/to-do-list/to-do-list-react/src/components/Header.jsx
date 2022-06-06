@@ -1,22 +1,31 @@
 import Task from './Task.jsx';
 import List from './List.jsx';
 
-function Header(props) {
+function Header({
+	value,
+	placeholder,
+	onAddTask,
+	onChangeTaskName,
+	type,
+	tasks,
+	onChangeStatus,
+	onDeleteTask,
+}) {
 	return (
 		<div className='high__container container'>
-			<h1>{props.type === 'low' ? 'Low' : 'Hight'}</h1>
+			<h1>{type === 'low' ? 'Low' : 'Hight'}</h1>
 			<Task
-				value={props.value}
-				placeholder={props.placeholder}
-				onInputTask={props.onAddTask}
-				onChangeTaskName={props.onChangeTaskName}
-				type={props.type}
+				value={value}
+				placeholder={placeholder}
+				onInputTask={onAddTask}
+				onChangeTaskName={onChangeTaskName}
+				type={type}
 			/>
 			<List
-				tasks={props.tasks}
-				onChangeStatus={props.onChangeStatus}
-				onDeleteTask={props.onDeleteTask}
-				type={props.type}
+				tasks={tasks}
+				onChangeStatus={onChangeStatus}
+				onDeleteTask={onDeleteTask}
+				type={type}
 			/>
 		</div>
 	);

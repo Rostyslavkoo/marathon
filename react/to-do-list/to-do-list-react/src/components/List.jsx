@@ -1,18 +1,15 @@
-function List(props) {
-	if (!props.tasks.length) return;
-	const taskList = props.tasks
-		.filter(item => item.status === props.type)
+function List({ tasks, type, onDeleteTask, onChangeStatus }) {
+	if (!tasks.length) return;
+	const taskList = tasks
+		.filter(item => item.status === type)
 		.map((item, key) => (
 			<div key={key} className={item.done ? ' task task-done' : 'task'}>
 				<div
 					className={item.done ? ' done-btn done' : 'done-btn'}
-					onClick={() => props.onChangeStatus(item)}
+					onClick={() => onChangeStatus(item)}
 				></div>
 				<p>{item.value}</p>
-				<div
-					className='delete-btn'
-					onClick={() => props.onDeleteTask(item)}
-				></div>
+				<div className='delete-btn' onClick={() => onDeleteTask(item)}></div>
 			</div>
 		));
 

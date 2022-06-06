@@ -1,20 +1,20 @@
-function Task(props) {
+function Task({ value, placeholder, type, onInputTask, onChangeTaskName }) {
 	function onChange(e) {
-		props.onChangeTaskName(e.target.value, props.type);
+		onChangeTaskName(e.target.value, type);
 	}
 	function onClickAdd() {
-		props.onInputTask(props.type);
+		onInputTask(type);
 	}
 	return (
 		<div className='search__wrapper'>
 			<input
-				value={props.value}
+				value={value}
 				type='text'
-				placeholder={props.placeholder}
+				placeholder={placeholder}
 				onChange={e => onChange(e)}
 			/>
 			<div className='input-btn' onClick={onClickAdd}></div>
 		</div>
 	);
 }
-export default Task
+export default Task;
