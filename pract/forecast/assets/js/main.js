@@ -7,7 +7,7 @@ import {
 } from './view.js';
 
 import { UI_ELEMENTS, SERVER, FAVORITE_CITIES } from './constant.js';
-import { setItemToStore, setCookie, getCookie } from './store.js';
+import { setItemToStore, setCookie } from './store.js';
 
 setChosenTab();
 
@@ -30,7 +30,7 @@ UI_ELEMENTS.INPUT.addEventListener('keyup', async event => {
 			setItemToStore('city_name', SERVER.WEATHER_DATA.name);
 			setCookie('city_name', SERVER.WEATHER_DATA.name, {
 				secure: true,
-				expires:new Date(Date.now() + 1e4)
+				expires: new Date(Date.now() + 1e4),
 			});
 		}
 		showNOW(SERVER.WEATHER_DATA);
@@ -62,7 +62,10 @@ export async function showFavouriteCity() {
 	document.querySelectorAll('.info-block').forEach(e => e.remove());
 	UI_ELEMENTS.INPUT.value = '';
 	setItemToStore('city_name', this.textContent);
-	setCookie('city_name', this.textContent, { secure: true, expires:new Date(Date.now() + 1e4)});
+	setCookie('city_name', this.textContent, {
+		secure: true,
+		expires: new Date(Date.now() + 1e4),
+	});
 	showNOW(await getJSON(SERVER.URL.WEATHER, this.textContent));
 }
 
@@ -106,10 +109,10 @@ function getCityName(city_name) {
 	// if( getCookie('city_name')){
 	// 	return  getCookie('city_name')
 	// }
-	if(SERVER.LOCALSTORAGE_DATA.city_name){
+	if (SERVER.LOCALSTORAGE_DATA.city_name) {
 		return SERVER.LOCALSTORAGE_DATA.city_name;
 	}
-	return 'Lviv'
+	return 'Lviv';
 }
 
 async function getJSON(data, city_name = null) {

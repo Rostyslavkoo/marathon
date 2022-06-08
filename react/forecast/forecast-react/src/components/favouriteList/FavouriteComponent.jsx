@@ -1,10 +1,18 @@
 import List from './List';
 
-function FavouriteComponent() {
+function FavouriteComponent({
+	favoriteCities,
+	onDeleteFavourite,
+	onClickFavourite,
+}) {
 	return (
 		<div className='locations_info__wrapper'>
 			<div className='title'>Added Locations:</div>
-			<List />
+			<List
+				favoriteCities={favoriteCities}
+				onDeleteFavourite={onDeleteFavourite}
+				onClickFavourite={onClickFavourite}
+			/>
 		</div>
 	);
 }
