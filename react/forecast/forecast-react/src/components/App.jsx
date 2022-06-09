@@ -3,7 +3,9 @@ import TabsComponent from './tabs/TabsComponent';
 import FavouriteComponent from './favouriteList/FavouriteComponent';
 import request from './requestService/request';
 import { SERVER } from './constans';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
+
+export const CityContext = createContext();
 
 function getCelciumTemp(data) {
 	return Math.round(data - 273.15);
@@ -22,7 +24,7 @@ function App() {
 	}, [favoriteCities]);
 
 	async function onSearchCity(cityName) {
-		const res = await request.getJSON(SERVER.URL.WEATHER, cityName);
+		const res = await request.Fetch(SERVER.URL.WEATHER, cityName);
 		if (res) {
 			const data = {
 				name: res.name,
@@ -42,7 +44,7 @@ function App() {
 	async function changeTabStep(chosenTab) {
 		if (!cityData.name) return;
 		if (chosenTab === 2 && cityData.name !== forecast.name) {
-			const res = await request.getJSON(SERVER.URL.FORECAST, cityData.name);
+			const res = await request.Fetch(SERVER.URL.FORECAST, cityData.name);
 			const data = {
 				name: res.city.name,
 				list: res.list,
@@ -73,13 +75,15 @@ function App() {
 			<div className='container__wrapper'>
 				<Header onSearchCity={onSearchCity} />
 				<div className='content'>
-					<TabsComponent
-						cityData={cityData}
-						forecast={forecast}
-						tabStep={tabStep}
-						changeTabStep={changeTabStep}
-						onChangeFavourite={onChangeFavourite}
-					/>
+					<CityContext.Provider
+						value={{ cityData: cityData, forecast: forecast }}
+					>
+						<TabsComponent
+							tabStep={tabStep}
+							changeTabStep={changeTabStep}
+							onChangeFavourite={onChangeFavourite}
+						/>
+					</CityContext.Provider>
 					<FavouriteComponent
 						favoriteCities={favoriteCities}
 						onClickFavourite={onClickFavourite}

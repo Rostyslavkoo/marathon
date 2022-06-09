@@ -1,7 +1,7 @@
 import { SERVER } from './../constans';
 
-async function getJSON(data, city_name = null) {
-	const url = `${data}?q=${city_name}&appid=${SERVER.API_KEY}`;
+async function Fetch(serverURL, cityName = null) {
+	const url = `${serverURL}?q=${cityName}&appid=${SERVER.API_KEY}`;
 	try {
 		const res = await (await fetch(url)).json();
 		if (res.cod == 404) {
@@ -15,4 +15,4 @@ async function getJSON(data, city_name = null) {
 	}
 }
 
-export default { getJSON };
+export default { Fetch };

@@ -4,7 +4,6 @@ import Forecast from './Forecast';
 import TabsButtons from './TabsButtons';
 
 function TabsComponent({
-	cityData,
 	tabStep,
 	changeTabStep,
 	forecast,
@@ -12,11 +11,9 @@ function TabsComponent({
 }) {
 	return (
 		<div className='tabs__wrapper'>
-			{tabStep === 0 && (
-				<Now cityData={cityData} onChangeFavourite={onChangeFavourite} />
-			)}
-			{tabStep == 1 && <Details cityData={cityData} />}
-			{tabStep === 2 && <Forecast forecast={forecast} />}
+			{tabStep === 0 && <Now onChangeFavourite={onChangeFavourite} />}
+			{tabStep == 1 && <Details />}
+			{tabStep === 2 && <Forecast />}
 			<TabsButtons tabStep={tabStep} changeTabStep={changeTabStep} />
 		</div>
 	);
