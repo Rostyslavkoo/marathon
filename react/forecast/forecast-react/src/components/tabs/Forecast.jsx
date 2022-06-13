@@ -1,6 +1,6 @@
 import { SERVER } from './../constans';
 import { format } from 'date-fns';
-import { CityContext } from './../App';
+import CityContext from './../context';
 
 function getCelciumTemp(data) {
 	return Math.round(data - 273.15);

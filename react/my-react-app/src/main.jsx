@@ -3,21 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
-function Example() {
-	// Оголошуємо нову змінну стану "count"
-	const [count, setCount] = useState(0);
+function useScreen(width, isMobile, isDesktop) {
+	const [returnedWidth, setReturnedWidth] = useState(width);
+	function handleResize() {
+		setReturnedWidth(window.innerWidth);
+	}
 	useEffect(() => {
-		// Оновлюємо заголовок документа, використовуючи API браузера
-		document.title = `Ви натиснули ${count} разів`;
+		handleResize();
 	});
-
-	return (
-		<div>
-			<p>Ви натиснули {count} разів</p>
-			<button onClick={() => setCount(count + 1)}>Натисни мене</button>
-		</div>
-	);
+	return returnedWidth;
 }
 
-root.render(<Example></Example>);
+function App() {
+	const screenWidth = useScreen(window.innerWidth,true);
+	console.log(screenWidth);
+	return <div>{screenWidth}</div>;
+}
+
+root.render(<App />);

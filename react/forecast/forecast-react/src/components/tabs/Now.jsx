@@ -1,5 +1,5 @@
 import { SERVER } from './../constans';
-import { CityContext } from './../App';
+import CityContext from './../context';
 
 function Now({ onChangeFavourite }) {
 	return (

@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { CityContext } from './../App';
+import CityContext from './../context';
 
 function Details({}) {
 	return (

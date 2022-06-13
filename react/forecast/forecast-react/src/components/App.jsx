@@ -3,18 +3,13 @@ import TabsComponent from './tabs/TabsComponent';
 import FavouriteComponent from './favouriteList/FavouriteComponent';
 import request from './requestService/request';
 import { SERVER } from './constans';
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect } from 'react';
+import CityContext from './context';
 
-export const CityContext = createContext();
-
-function getCelciumTemp(data) {
-	return Math.round(data - 273.15);
-}
 function App() {
 	const [cityData, setCityData] = useState({});
 	const [favoriteCities, setFavoriteCitiest] = useState([]);
 	const [forecast, setForecast] = useState({});
-	const [tabStep, setTabStep] = useState(0);
 
 	useEffect(() => {
 		const isFavourite = (cityData.isFavourite = !!favoriteCities.find(
@@ -23,36 +18,6 @@ function App() {
 		setCityData(prev => ({ ...prev, isFavourite: isFavourite }));
 	}, [favoriteCities]);
 
-	async function onSearchCity(cityName) {
-		const res = await request.Fetch(SERVER.URL.WEATHER, cityName);
-		if (res) {
-			const data = {
-				name: res.name,
-				id: res.id,
-				temperature: getCelciumTemp(res.main.temp),
-				fells_like: getCelciumTemp(res.main.feels_like),
-				weather_info: res.weather[0].main,
-				icon: res.weather[0].icon,
-				isFavourite: false,
-				sunrise: res.sys.sunrise,
-				sunset: res.sys.sunset,
-			};
-			setCityData(data);
-			setTabStep(0);
-		}
-	}
-	async function changeTabStep(chosenTab) {
-		if (!cityData.name) return;
-		if (chosenTab === 2 && cityData.name !== forecast.name) {
-			const res = await request.Fetch(SERVER.URL.FORECAST, cityData.name);
-			const data = {
-				name: res.city.name,
-				list: res.list,
-			};
-			setForecast(data);
-		}
-		setTabStep(chosenTab);
-	}
 	function onChangeFavourite(data) {
 		if (!data.isFavourite) {
 			setFavoriteCitiest([data, ...favoriteCities]);
@@ -73,23 +38,24 @@ function App() {
 	return (
 		<div className='container'>
 			<div className='container__wrapper'>
-				<Header onSearchCity={onSearchCity} />
-				<div className='content'>
-					<CityContext.Provider
-						value={{ cityData: cityData, forecast: forecast }}
-					>
-						<TabsComponent
-							tabStep={tabStep}
-							changeTabStep={changeTabStep}
-							onChangeFavourite={onChangeFavourite}
+				<CityContext.Provider
+					value={{
+						cityData: cityData,
+						forecast: forecast,
+						setCityData: setCityData,
+						setForecast: setForecast,
+					}}
+				>
+					<Header />
+					<div className='content'>
+						<TabsComponent onChangeFavourite={onChangeFavourite} />
+						<FavouriteComponent
+							favoriteCities={favoriteCities}
+							onClickFavourite={onClickFavourite}
+							onDeleteFavourite={onDeleteFavourite}
 						/>
-					</CityContext.Provider>
-					<FavouriteComponent
-						favoriteCities={favoriteCities}
-						onClickFavourite={onClickFavourite}
-						onDeleteFavourite={onDeleteFavourite}
-					/>
-				</div>
+					</div>
+				</CityContext.Provider>
 			</div>
 		</div>
 	);
