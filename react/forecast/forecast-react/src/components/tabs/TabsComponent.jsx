@@ -25,7 +25,7 @@ function TabsComponent({ changeTabStep, onChangeFavourite }) {
 	}
 	return (
 		<div className='tabs__wrapper'>
-			{tabStep === 0 && <Now onChangeFavourite={onChangeFavourite} />}
+			{tabStep === 0 && <Now  />}
 			{tabStep == 1 && <Details />}
 			{tabStep === 2 && <Forecast />}
 			<TabsButtons tabStep={tabStep} changeTabStep={changeTabStep} />

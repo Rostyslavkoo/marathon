@@ -1,7 +1,22 @@
 import { SERVER } from './../constans';
 import CityContext from './../context';
+import { useContext } from 'react';
 
 function Now({ onChangeFavourite }) {
+	const { setFavoriteCitiest, favoriteCities } = useContext(CityContext);
+	function onChangeFavourite(data) {
+		if (!data.isFavourite) {
+			setFavoriteCitiest([data, ...favoriteCities]);
+		} else {
+			onDeleteFavourite(data.id);
+		}
+	}
+	function onDeleteFavourite(cityId) {
+		setFavoriteCitiest(
+			favoriteCities.filter(favouriteCity => favouriteCity.id !== cityId)
+		);
+	}
+
 	return (
 		<CityContext.Consumer>
 			{({ cityData: { name, id, icon, temperature, isFavourite } }) => (
