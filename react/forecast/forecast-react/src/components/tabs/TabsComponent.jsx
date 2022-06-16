@@ -2,14 +2,17 @@ import Now from './Now';
 import Details from './Details';
 import Forecast from './Forecast';
 import TabsButtons from './TabsButtons';
-import { useState, useContext } from 'react';
-import CityContext from './../context';
+import { useState, useEffect } from 'react';
 import request from './../requestService/request';
 import { SERVER } from './../constans';
+import { connect } from 'react-redux';
+import { addForecast } from './../../redux/actions';
 
-function TabsComponent({ changeTabStep, onChangeFavourite }) {
+function TabsComponent({ changeTabStep, cityData, forecast = [], dispatch }) {
 	const [tabStep, setTabStep] = useState(0);
-	const { cityData, setForecast, forecast } = useContext(CityContext);
+	useEffect(() => {
+		changeTabStep(0);
+	}, [cityData]);
 
 	async function changeTabStep(chosenTab) {
 		if (!cityData.name) return;
@@ -19,18 +22,22 @@ function TabsComponent({ changeTabStep, onChangeFavourite }) {
 				name: res.city.name,
 				list: res.list,
 			};
-			setForecast(data);
+			dispatch(addForecast(data));
 		}
 		setTabStep(chosenTab);
 	}
 	return (
 		<div className='tabs__wrapper'>
-			{tabStep === 0 && <Now  />}
+			{tabStep === 0 && <Now />}
 			{tabStep == 1 && <Details />}
 			{tabStep === 2 && <Forecast />}
 			<TabsButtons tabStep={tabStep} changeTabStep={changeTabStep} />
 		</div>
 	);
 }
+const mapStateToProps = state => ({
+	cityData: state.cityData,
+	forecast: state.forecast,
+});
 
-export default TabsComponent;
+export default connect(mapStateToProps)(TabsComponent);

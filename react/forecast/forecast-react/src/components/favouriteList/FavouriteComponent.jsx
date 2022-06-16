@@ -1,9 +1,9 @@
 import List from './List';
 import CityContext from './../context';
 import { useContext } from 'react';
-
-function FavouriteComponent({ favoriteCities }) {
-	const { setFavoriteCitiest, cityData, onSearchCity } =
+import { connect } from 'react-redux';
+function FavouriteComponent({ favoriteCities,cityData }) {
+	const { setFavoriteCitiest,  onSearchCity } =
 		useContext(CityContext);
 
 	function onClickFavourite(cityName) {
@@ -26,4 +26,7 @@ function FavouriteComponent({ favoriteCities }) {
 		</div>
 	);
 }
-export default FavouriteComponent;
+const mapStateToProps = state => ({
+	cityData: state.cityData
+});
+export default connect(mapStateToProps)(FavouriteComponent);
