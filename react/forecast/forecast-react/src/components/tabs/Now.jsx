@@ -1,12 +1,13 @@
 import { SERVER } from './../constans';
 import CityContext from './../context';
 import { useContext } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-function Now({
-	onChangeFavourite,
-	cityData: { name, id, icon, temperature, isFavourite },
-}) {
+function Now({ onChangeFavourite }) {
+	const { name, id, icon, temperature, isFavourite } = useSelector(
+		state => state.cityData
+		
+	);
 	const { setFavoriteCitiest, favoriteCities } = useContext(CityContext);
 	function onChangeFavourite(data) {
 		if (!data.isFavourite) {
@@ -48,8 +49,5 @@ function Now({
 		</div>
 	);
 }
-const mapStateToProps = state => ({
-	cityData: state.cityData,
-});
 
-export default connect(mapStateToProps)(Now);
+export default Now;
