@@ -1,20 +1,19 @@
 import List from './List';
 import CityContext from '@/utilities/context';
 import { useContext } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { deleteFavouriteCities } from '@/redux/actions';
 
 function FavouriteComponent({ favoriteCities, cityData }) {
-	const { setFavoriteCitiest, onSearchCity } = useContext(CityContext);
-
+	const { onSearchCity } = useContext(CityContext);
+	const dispatch = useDispatch();
 	function onClickFavourite(cityName) {
-		if (cityName === cityData.name) return;
+		if (cityData.name && cityName === cityData.name ) return;
 		onSearchCity(cityName);
 	}
 	function onDeleteFavourite(cityId) {
-		setFavoriteCitiest(
-			favoriteCities.filter(favouriteCity => favouriteCity.id !== cityId)
-		);
+		dispatch(deleteFavouriteCities(cityId));
 	}
 	return (
 		<div className='locations_info__wrapper'>
@@ -36,6 +35,7 @@ function FavouriteComponent({ favoriteCities, cityData }) {
 	);
 }
 const mapStateToProps = state => ({
+	favoriteCities: state.favoriteCities,
 	cityData: state.cityData,
 });
 export default connect(mapStateToProps)(FavouriteComponent);

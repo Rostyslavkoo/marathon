@@ -1,17 +1,19 @@
 import { SERVER } from '@/utilities/constans';
 import CityContext from '@/utilities/context';
 import { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addFavouriteCities } from '@/redux/actions';
 
 function Now({ onChangeFavourite }) {
+	const dispatch = useDispatch();
 	const { name, id, icon, temperature, isFavourite } = useSelector(
 		state => state.cityData
-		
 	);
 	const { setFavoriteCitiest, favoriteCities } = useContext(CityContext);
 	function onChangeFavourite(data) {
-		if (!data.isFavourite) {
-			setFavoriteCitiest([data, ...favoriteCities]);
+		if (!name) return;
+		if (!isFavourite) {
+			dispatch(addFavouriteCities(data));
 		} else {
 			onDeleteFavourite(data.id);
 		}
@@ -35,7 +37,6 @@ function Now({ onChangeFavourite }) {
 						onChangeFavourite({
 							name: name,
 							id: id,
-							isFavourite: isFavourite,
 						})
 					}
 					id='city-favorite'

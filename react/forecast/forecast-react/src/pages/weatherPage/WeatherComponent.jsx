@@ -5,20 +5,20 @@ import { useState, useEffect } from 'react';
 import CityContext from '@/utilities/context';
 import { SERVER } from '@/utilities/constans';
 import request from '@/utilities/requestService/request';
-import { addCityData } from '@/redux/actions';
+import { addCityData, toggleFavourite } from '@/redux/actions';
 import { connect } from 'react-redux';
 
 function getCelciumTemp(data) {
 	return Math.round(data - 273.15);
 }
 
-function App({ dispatch, cityData }) {
-	const [favoriteCities, setFavoriteCitiest] = useState([]);
+function App({ dispatch, favoriteCities, cityData }) {
+	// const [favoriteCities, setFavoriteCitiest] = useState([]);
 
 	useEffect(() => {
-		cityData.isFavourite = isFavourite(cityData.name);
-		dispatch(addCityData({}));
-		dispatch(addCityData(cityData));
+		if ('id' in cityData) {
+			dispatch(toggleFavourite(cityData.id));
+		}
 	}, [favoriteCities]);
 
 	function isFavourite(cityName) {
@@ -41,6 +41,7 @@ function App({ dispatch, cityData }) {
 				sunrise: res.sys.sunrise,
 				sunset: res.sys.sunset,
 			};
+			console.log(data);
 			dispatch(addCityData(data));
 		}
 	}
@@ -48,15 +49,13 @@ function App({ dispatch, cityData }) {
 		<>
 			<CityContext.Provider
 				value={{
-					setFavoriteCitiest: setFavoriteCitiest,
 					onSearchCity: onSearchCity,
-					favoriteCities: favoriteCities,
 				}}
 			>
 				<Header onSearchCity={onSearchCity} />
 				<div className='content'>
 					<TabsComponent />
-					<FavouriteComponent favoriteCities={favoriteCities} />
+					<FavouriteComponent />
 				</div>
 			</CityContext.Provider>
 		</>
@@ -64,6 +63,7 @@ function App({ dispatch, cityData }) {
 }
 const mapStateToProps = state => ({
 	cityData: state.cityData,
+	favoriteCities: state.favoriteCities,
 });
 
 export default connect(mapStateToProps)(App);
