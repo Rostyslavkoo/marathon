@@ -1,4 +1,4 @@
-import { SERVER } from './../constans';
+import { SERVER } from '../constans';
 
 async function Fetch(serverURL, cityName = null) {
 	const url = `${serverURL}?q=${cityName}&appid=${SERVER.API_KEY}`;

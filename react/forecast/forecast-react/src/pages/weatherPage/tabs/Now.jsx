@@ -1,5 +1,5 @@
-import { SERVER } from './../constans';
-import CityContext from './../context';
+import { SERVER } from '@/utilities/constans';
+import CityContext from '@/utilities/context';
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 

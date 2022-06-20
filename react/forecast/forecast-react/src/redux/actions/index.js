@@ -1,15 +1,15 @@
 export const CITY_DATA = 'CITY_DATA';
 export const FORECAST = 'FORECAST';
 
-export function addCityData(payload) {
-	return {
-		type: CITY_DATA,
-		cityData: payload,
+export const actionCreator = type => {
+	return payload => {
+		return {
+			type,
+			payload,
+		};
 	};
-}
-export function addForecast(payload) {
-	return {
-		type: FORECAST,
-		forecast: payload,
-	};
-}
+};
+
+export const addCityData = actionCreator(CITY_DATA);
+export const addForecast = actionCreator(FORECAST);
+

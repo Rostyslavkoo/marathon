@@ -1,5 +1,5 @@
 import List from './List';
-import CityContext from './../context';
+import CityContext from '@/utilities/context';
 import { useContext } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';

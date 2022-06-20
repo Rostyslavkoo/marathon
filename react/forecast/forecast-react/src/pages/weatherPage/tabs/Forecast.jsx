@@ -1,4 +1,4 @@
-import { SERVER } from './../constans';
+import { SERVER } from '@/utilities/constans';
 import { format } from 'date-fns';
 import { connect } from 'react-redux';
 

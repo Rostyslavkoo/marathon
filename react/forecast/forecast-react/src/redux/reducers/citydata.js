@@ -1,7 +1,7 @@
 const cityData = (state = [], action) => {
 	switch (action.type) {
 		case 'CITY_DATA':
-			return action.cityData;
+			return action.payload;
 		default:
 			return state;
 	}

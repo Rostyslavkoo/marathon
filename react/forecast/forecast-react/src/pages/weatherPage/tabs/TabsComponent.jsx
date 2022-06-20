@@ -3,20 +3,25 @@ import Details from './Details';
 import Forecast from './Forecast';
 import TabsButtons from './TabsButtons';
 import { useState, useEffect } from 'react';
-import request from './../requestService/request';
-import { SERVER } from './../constans';
+import request from '@/utilities/requestService/request';
+import { SERVER } from '@/utilities/constans';
 import { connect } from 'react-redux';
-import { addForecast } from './../../redux/actions';
+import { addForecast } from '@/redux/actions';
 
+export const TABS = {
+	NOW: 'Now',
+	DETAILS: 'Details',
+	FORECAST: 'Forecast',
+};
 function TabsComponent({ changeTabStep, cityData, forecast = [], dispatch }) {
-	const [tabStep, setTabStep] = useState(0);
+	const [tabStep, setTabStep] = useState(TABS.NOW);
 	useEffect(() => {
-		changeTabStep(0);
+		changeTabStep(TABS.NOW);
 	}, [cityData]);
 
 	async function changeTabStep(chosenTab) {
 		if (!cityData.name) return;
-		if (chosenTab === 2 && cityData.name !== forecast.name) {
+		if (chosenTab === TABS.FORECAST && cityData.name !== forecast.name) {
 			const res = await request.Fetch(SERVER.URL.FORECAST, cityData.name);
 			const data = {
 				name: res.city.name,
@@ -28,9 +33,9 @@ function TabsComponent({ changeTabStep, cityData, forecast = [], dispatch }) {
 	}
 	return (
 		<div className='tabs__wrapper'>
-			{tabStep === 0 && <Now />}
-			{tabStep == 1 && <Details />}
-			{tabStep === 2 && <Forecast />}
+			{tabStep === TABS.NOW && <Now />}
+			{tabStep == TABS.DETAILS && <Details />}
+			{tabStep === TABS.FORECAST && <Forecast />}
 			<TabsButtons tabStep={tabStep} changeTabStep={changeTabStep} />
 		</div>
 	);

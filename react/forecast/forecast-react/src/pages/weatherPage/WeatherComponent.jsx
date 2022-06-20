@@ -2,10 +2,10 @@ import Header from './Header';
 import TabsComponent from './tabs/TabsComponent';
 import FavouriteComponent from './favouriteList/FavouriteComponent';
 import { useState, useEffect } from 'react';
-import CityContext from './context';
-import { SERVER } from './constans';
-import request from './requestService/request';
-import { addCityData } from './../redux/actions';
+import CityContext from '@/utilities/context';
+import { SERVER } from '@/utilities/constans';
+import request from '@/utilities/requestService/request';
+import { addCityData } from '@/redux/actions';
 import { connect } from 'react-redux';
 
 function getCelciumTemp(data) {
