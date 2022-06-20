@@ -45,23 +45,21 @@ function App({ dispatch, cityData }) {
 		}
 	}
 	return (
-		<div className='container'>
-			<div className='container__wrapper'>
-				<CityContext.Provider
-					value={{
-						setFavoriteCitiest: setFavoriteCitiest,
-						onSearchCity: onSearchCity,
-						favoriteCities: favoriteCities,
-					}}
-				>
-					<Header onSearchCity={onSearchCity} />
-					<div className='content'>
-						<TabsComponent  />
-						<FavouriteComponent favoriteCities={favoriteCities} />
-					</div>
-				</CityContext.Provider>
-			</div>
-		</div>
+		<>
+			<CityContext.Provider
+				value={{
+					setFavoriteCitiest: setFavoriteCitiest,
+					onSearchCity: onSearchCity,
+					favoriteCities: favoriteCities,
+				}}
+			>
+				<Header onSearchCity={onSearchCity} />
+				<div className='content'>
+					<TabsComponent />
+					<FavouriteComponent favoriteCities={favoriteCities} />
+				</div>
+			</CityContext.Provider>
+		</>
 	);
 }
 const mapStateToProps = state => ({
