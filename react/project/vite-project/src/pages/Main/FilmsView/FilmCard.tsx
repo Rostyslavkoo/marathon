@@ -17,7 +17,7 @@ function FilmCard({
 		<Card sx={{ display: 'flex', width: '100%', height: '300px' }}>
 			<CardMedia
 				component='img'
-				image={poster_path}
+				image={`https://image.tmdb.org/t/p/w300${poster_path}`}
 				alt={title}
 				height='300'
 				width='100'
