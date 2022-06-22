@@ -4,6 +4,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
@@ -26,7 +27,7 @@ function FilmCard({
 			<CardContent sx={{ pb: 0, minWidth: '60%' }}>
 				<Grid
 					container
-					alignItems='start'
+					alignItems='flex-start'
 					justifyContent='space-between'
 					direction='column'
 					sx={{ height: '100%' }}
@@ -47,11 +48,15 @@ function FilmCard({
 								<BookmarkBorderOutlinedIcon />
 							</IconButton>
 						</Grid>
-					</Grid>
-					<Grid item>
-						<Typography variant='body2' color='text.secondary'>
-							{title}
-						</Typography>
+						<Box sx={{ pt: 3, width: '100%' }}>
+							<Typography
+								variant='body1'
+								color='text.secondary'
+								sx={{ fontWeight: 800 }}
+							>
+								{title}
+							</Typography>
+						</Box>
 					</Grid>
 					<Grid item sx={{ width: '100%' }}>
 						<Button sx={{ width: '100%' }}>Learn More</Button>
