@@ -6,6 +6,7 @@ import SortedCheckboxList from './FilterSorted/SortedCheckboxList';
 
 function FilterComponent() {
 	return (
+		
 		<Card sx={{ minWidth: 275, py: 3, px: 2 }}>
 			<Typography variant='h5' component='div'>
 				Filters:
