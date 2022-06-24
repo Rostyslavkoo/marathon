@@ -1,27 +1,19 @@
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { PageContext } from './../../../Main/context';
+import { getSortedYears, getSortedData } from './../../../../data/sorted';
 
-const releaseYears = [
-	{
-		value: 2022,
-		label: 2022,
-	},
-	{
-		value: 2021,
-		label: 2021,
-	},
-];
 function SortedSelect() {
-	const [sortedValue, setSortedValue] = useState('');
-	const [releaseYear, setReleaseYear] = useState('');
+	const { sortedValue, setSortedValue, releaseYear, setReleaseYear } =
+		useContext(PageContext);
+
 	const handleChangeSorted = (event: any) => {
-		console.log(event.target.value);
 		setSortedValue(event.target.value as string);
 	};
 	const handleChangeYear = (event: any) => {
-		setReleaseYear(event.target.value as string);
+		setReleaseYear(event.target.value as any);
 	};
 
 	return (
@@ -36,11 +28,12 @@ function SortedSelect() {
 					defaultValue='choose'
 					id='select-sorted'
 				>
-					<MenuItem value={''}>
-						<em>None</em>
-					</MenuItem>
-					<MenuItem value={'descent'}>descending sort</MenuItem>
-					<MenuItem value={'growth'}>sort by growth</MenuItem>
+					{getSortedData().map(sorted => (
+						<MenuItem key={sorted.value} value={sorted.value}>
+							{' '}
+							{sorted.label}
+						</MenuItem>
+					))}
 				</TextField>
 			</FormControl>
 			<FormControl sx={{ p: 1, minWidth: '100%' }}>
@@ -52,12 +45,9 @@ function SortedSelect() {
 					onChange={handleChangeYear}
 					size='small'
 				>
-					<MenuItem value={''}>
-						<em>None</em>
-					</MenuItem>
-					{releaseYears.map(year => (
-						<MenuItem key={year.value} value={year.value}>
-							{year.label}
+					{getSortedYears().map(year => (
+						<MenuItem key={year} value={year}>
+							{year}
 						</MenuItem>
 					))}
 				</TextField>

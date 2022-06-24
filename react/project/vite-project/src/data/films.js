@@ -4068,11 +4068,27 @@ export const PaginationOptions = {
 	limit: 4,
 };
 
+let filmLength = films.length;
 export function getFimsLength() {
-	return films.length;
+	return filmLength;
 }
-export function getFilms(page) {
-	return [...films].slice(
+export function getFilms({ page, sorted_by, release_year, filterValues }) {
+	let sortedFilms = [...films];
+	if (sorted_by) {
+		const [type, order] = sorted_by.split('-');
+		if (order === 'desc') {
+			sortedFilms.sort((a, b) => a[type] - b[type]);
+		} else {
+			sortedFilms.sort((a, b) => b[type] - a[type]);
+		}
+	}
+	if (release_year) {
+		sortedFilms = sortedFilms.filter(
+			film => film.release_date.slice(0, 4) == release_year
+		);
+	}
+	filmLength = sortedFilms.length;
+	return [...sortedFilms].slice(
 		PaginationOptions.limit * (page - 1),
 		PaginationOptions.limit * page
 	);
