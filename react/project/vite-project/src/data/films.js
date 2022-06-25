@@ -4048,7 +4048,7 @@ const films = [
 	{
 		adult: false,
 		backdrop_path: '/23IeumCWwWE7u2d2FDNSGPsNRbl.jpg',
-		genre_ids: [18, 27, 53],
+		genre_ids: [28],
 		id: 474764,
 		original_language: 'en',
 		original_title: 'The Lodge',
@@ -4086,6 +4086,13 @@ export function getFilms({ page, sorted_by, release_year, filterValues }) {
 		sortedFilms = sortedFilms.filter(
 			film => film.release_date.slice(0, 4) == release_year
 		);
+	}
+	if (filterValues.length) {
+		filterValues.forEach(filterValue => {
+			sortedFilms = sortedFilms.filter(film => {
+				if (film.genre_ids.includes(Number(filterValue))) return film;
+			});
+		});
 	}
 	filmLength = sortedFilms.length;
 	return [...sortedFilms].slice(

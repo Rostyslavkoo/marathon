@@ -4,7 +4,7 @@ import FilterComponent from './Filters/FilterComponent';
 import FilmsViewComponent from './FilmsView/FilmsViewComponent';
 import { useState, useEffect } from 'react';
 import { PageContext } from './context';
-import {  getFimsLength, PaginationOptions } from './../../data/films';
+import { getFimsLength, PaginationOptions } from './../../data/films';
 import { getSortedCONSTANS } from './../../data/sorted';
 
 function MainPage() {
@@ -13,10 +13,10 @@ function MainPage() {
 
 	const [sortedValue, setSortedValue] = useState(getSortedCONSTANS().DEFAULT);
 	const [releaseYear, setReleaseYear] = useState(2020);
-	const [filterValues,setFilterValues] = useState([])
+	const [filterValues, setFilterValues] = useState([]);
 	useEffect(() => {
-		setPaginationLength(getFimsLength() / PaginationOptions.limit);
-	}, [releaseYear,filterValues]);
+		setPaginationLength(Math.round(getFimsLength() / PaginationOptions.limit));
+	}, [releaseYear, filterValues]);
 	return (
 		<div>
 			<Container sx={{ mt: 2 }} maxWidth='xl'>
@@ -30,8 +30,8 @@ function MainPage() {
 						setSortedValue: setSortedValue,
 						releaseYear: releaseYear,
 						setReleaseYear: setReleaseYear,
-						filterValues:filterValues,
-						setFilterValues:setFilterValues
+						filterValues: filterValues,
+						setFilterValues: setFilterValues,
 					}}
 				>
 					<Grid
