@@ -4,7 +4,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Typography from '@mui/material/Typography';
 import { getGenres } from './../../../../data/genres';
 import Pagination from './../Pagination/PaginationComponent';
-import { PageContext } from './../../../Main/context';
+import { PageContext } from '../../../../context';
 import { useContext } from 'react';
 
 function SortedCheckboxList() {

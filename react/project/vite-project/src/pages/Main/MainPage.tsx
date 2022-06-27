@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import FilterComponent from './Filters/FilterComponent';
 import FilmsViewComponent from './FilmsView/FilmsViewComponent';
 import { useState, useEffect } from 'react';
-import { PageContext } from './context';
+import { PageContext } from './../../context';
 import { getFimsLength, PaginationOptions } from './../../data/films';
 import { getSortedCONSTANS } from './../../data/sorted';
 

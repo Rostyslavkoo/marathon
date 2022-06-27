@@ -1,5 +1,5 @@
 import Pagination from '@mui/material/Pagination';
-import { PageContext } from './../../../Main/context';
+import { PageContext } from '../../../../context';
 import { useContext } from 'react';
 function PaginationComponent() {
 	const { page, setPage, paginationLength } = useContext(PageContext);

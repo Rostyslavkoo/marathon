@@ -5,7 +5,7 @@ import {
 	getFimsLength,
 	PaginationOptions,
 } from './../../../data/films';
-import { PageContext } from './../../Main/context';
+import { PageContext } from '../../../context';
 import { useContext } from 'react';
 
 function FilmsCardsList() {
