@@ -7,14 +7,14 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import LoginDialog from '../pages/LoginDialog/LoginDialog';
+import LoginDialog from '../pages/Login/LoginDialog';
 import { removeUserData } from './../redux/actions';
 import { AutorisationContext } from './../context';
+import { Link } from 'react-router-dom';
 
 function Header() {
-	const { openLoginDialog, setOpenLoginDialog } = useContext(
-		AutorisationContext
-	);
+	const { openLoginDialog, setOpenLoginDialog } =
+		useContext(AutorisationContext);
 	const dispatch = useDispatch();
 	const handleClickOpen = () => {
 		if (isLogin) {
@@ -31,7 +31,7 @@ function Header() {
 			<AppBar position='static'>
 				<Toolbar variant='dense'>
 					<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-						Home
+						<Link to='/'>Home</Link>
 					</Typography>
 					<Button
 						color={isLogin ? 'error' : 'success'}

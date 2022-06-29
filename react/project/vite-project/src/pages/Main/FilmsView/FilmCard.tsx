@@ -8,12 +8,30 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+import StarIcon from '@mui/icons-material/Star';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function FilmCard({
-	film: { id, poster_path, title, vote_average },
+	film: { id, poster_path, title, vote_average, is_liked, is_see_later },
+	addToLiked,
+	addToSeeLater,
 }: {
 	film: any;
+	addToLiked: any;
+	addToSeeLater: any;
 }) {
+	let navigate = useNavigate();
+	function handleDetails(){
+		navigate(`film-about-${id}`)
+	}
+	function handleClickLiked() {
+		addToLiked(id);
+	}
+	function handleClickLater() {
+		addToSeeLater(id);
+	}
 	return (
 		<Card sx={{ display: 'flex', width: '100%', height: '300px' }}>
 			<CardMedia
@@ -41,11 +59,23 @@ function FilmCard({
 							Rating: {vote_average}
 						</Typography>
 						<Grid item>
-							<IconButton color='secondary' size='small'>
-								<StarBorderIcon />
+							<IconButton
+								color='primary'
+								size='small'
+								onClick={handleClickLiked}
+							>
+								{is_liked ? <StarIcon /> : <StarBorderIcon />}
 							</IconButton>
-							<IconButton color='secondary' size='small'>
-								<BookmarkBorderOutlinedIcon />
+							<IconButton
+								color='primary'
+								size='small'
+								onClick={handleClickLater}
+							>
+								{is_see_later ? (
+									<BookmarkIcon />
+								) : (
+									<BookmarkBorderOutlinedIcon />
+								)}
 							</IconButton>
 						</Grid>
 						<Box sx={{ pt: 3, width: '100%' }}>
@@ -59,7 +89,8 @@ function FilmCard({
 						</Box>
 					</Grid>
 					<Grid item sx={{ width: '100%' }}>
-						<Button sx={{ width: '100%' }}>Learn More</Button>
+						
+							<Button sx={{ width: '100%' }} onClick={handleDetails}>Learn More</Button>
 					</Grid>
 				</Grid>
 			</CardContent>

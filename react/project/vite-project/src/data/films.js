@@ -4063,17 +4063,58 @@ const films = [
 		vote_count: 885,
 	},
 ];
+export function resetLikedAndLater() {
+	films.map(film => {
+		film.is_see_later = false;
+		film.is_liked = false;
+	});
+}
+export function UpdateLikedFilm(id) {
+	const film = films.find(film => film.id === id);
+	if ('is_liked' in film) {
+		film.is_liked = !film.is_liked;
+	} else {
+		film.is_liked = true;
+	}
+}
 
+export function UpdateSeeLater(id) {
+	const film = films.find(film => film.id === id);
+	if ('is_see_later' in film) {
+		film.is_see_later = !film.is_see_later;
+	} else {
+		film.is_see_later = true;
+	}
+}
+export function getFilmById(id) {
+	return films.find(film => film.id == id);
+}
 export const PaginationOptions = {
-	limit: 4,
+	limit: 10,
 };
 
 let filmLength = films.length;
 export function getFimsLength() {
 	return filmLength;
 }
-export function getFilms({ page, sorted_by, release_year, filterValues }) {
+export function getFilms({
+	page,
+	sorted_by,
+	release_year,
+	filterValues,
+	isLaterFilter,
+	isLikedFilter,
+}) {
 	let sortedFilms = [...films];
+	if (isLaterFilter) {
+		sortedFilms = sortedFilms.filter(
+			film => film.is_see_later === isLaterFilter
+		);
+	}
+	if (isLikedFilter) {
+		sortedFilms = sortedFilms.filter(film => film.is_liked === isLikedFilter);
+	}
+
 	if (sorted_by) {
 		const [type, order] = sorted_by.split('-');
 		if (order === 'desc') {
@@ -4095,7 +4136,7 @@ export function getFilms({ page, sorted_by, release_year, filterValues }) {
 		});
 	}
 	filmLength = sortedFilms.length;
-	
+
 	return [...sortedFilms].slice(
 		PaginationOptions.limit * (page - 1),
 		PaginationOptions.limit * page

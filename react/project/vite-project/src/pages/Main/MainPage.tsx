@@ -14,9 +14,12 @@ function MainPage() {
 	const [sortedValue, setSortedValue] = useState(getSortedCONSTANS().DEFAULT);
 	const [releaseYear, setReleaseYear] = useState(2020);
 	const [filterValues, setFilterValues] = useState([]);
+	const [isLikedFilter,setIsLikedFilter] = useState(false)
+	const [isLaterFilter,setIsLaterFilter] = useState(false)
+
 	useEffect(() => {
 		setPaginationLength(Math.round(getFimsLength() / PaginationOptions.limit));
-	}, [releaseYear, filterValues]);
+	}, [releaseYear, filterValues,isLikedFilter,isLaterFilter]);
 	return (
 		<div>
 			<Container sx={{ mt: 2 }} maxWidth='xl'>
@@ -32,6 +35,10 @@ function MainPage() {
 						setReleaseYear: setReleaseYear,
 						filterValues: filterValues,
 						setFilterValues: setFilterValues,
+						isLaterFilter:isLaterFilter,
+						setIsLikedFilter:setIsLikedFilter,
+						isLikedFilter:isLikedFilter,
+						setIsLaterFilter:setIsLaterFilter
 					}}
 				>
 					<Grid
