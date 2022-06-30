@@ -3,9 +3,9 @@ import Grid from '@mui/material/Grid';
 import FilterComponent from './Filters/FilterComponent';
 import FilmsViewComponent from './FilmsView/FilmsViewComponent';
 import { useState, useEffect } from 'react';
-import { PageContext } from './../../context';
-import { getFimsLength, PaginationOptions } from './../../data/films';
-import { getSortedCONSTANS } from './../../data/sorted';
+import { FilterContext } from '@/context/filtersContext';
+import { getFimsLength, PaginationOptions } from '@/data/films';
+import { getSortedCONSTANS } from '@/data/sorted';
 
 function MainPage() {
 	const [page, setPage] = useState(1);
@@ -23,7 +23,7 @@ function MainPage() {
 	return (
 		<div>
 			<Container sx={{ mt: 2 }} maxWidth='xl'>
-				<PageContext.Provider
+				<FilterContext.Provider
 					value={{
 						page: page,
 						setPage: setPage,
@@ -54,7 +54,7 @@ function MainPage() {
 							<FilmsViewComponent />
 						</Grid>
 					</Grid>
-				</PageContext.Provider>
+				</FilterContext.Provider>
 			</Container>
 		</div>
 	);

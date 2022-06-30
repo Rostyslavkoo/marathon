@@ -4069,7 +4069,7 @@ export function resetLikedAndLater() {
 		film.is_liked = false;
 	});
 }
-export function UpdateLikedFilm(id) {
+export function UpdateLikedFilm(id: number | string) {
 	const film = films.find(film => film.id === id);
 	if ('is_liked' in film) {
 		film.is_liked = !film.is_liked;
@@ -4078,7 +4078,7 @@ export function UpdateLikedFilm(id) {
 	}
 }
 
-export function UpdateSeeLater(id) {
+export function UpdateSeeLater(id:number | string) {
 	const film = films.find(film => film.id === id);
 	if ('is_see_later' in film) {
 		film.is_see_later = !film.is_see_later;
@@ -4086,7 +4086,7 @@ export function UpdateSeeLater(id) {
 		film.is_see_later = true;
 	}
 }
-export function getFilmById(id) {
+export function getFilmById(id:number | string) {
 	return films.find(film => film.id == id);
 }
 export const PaginationOptions = {
@@ -4104,6 +4104,13 @@ export function getFilms({
 	filterValues,
 	isLaterFilter,
 	isLikedFilter,
+}:{
+	page:any,
+	sorted_by:string,
+	release_year:any,
+	filterValues:any,
+	isLaterFilter:boolean,
+	isLikedFilter:boolean
 }) {
 	let sortedFilms = [...films];
 	if (isLaterFilter) {

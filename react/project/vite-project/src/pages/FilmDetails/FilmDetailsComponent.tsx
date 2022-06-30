@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { getFilmById } from './../../data/films';
+import { getFilmById } from '@/data/films';
 import Box from '@mui/material/Container';
 
 function FilmDetailsComponent() {

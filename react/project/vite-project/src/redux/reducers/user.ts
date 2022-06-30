@@ -1,11 +1,11 @@
-import { USER_DATA, REMOVE_USER_DATA } from './../actions';
+import { USER_DATA, REMOVE_USER_DATA } from '../actions'
 
 let userData = {};
 if (localStorage.user) {
 	userData = JSON.parse(localStorage.user);
 }
 
-const user = (state = userData, action) => {
+const user = (state = userData, action:any) => {
 	switch (action.type) {
 		case USER_DATA:
 			return action.payload;

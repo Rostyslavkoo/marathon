@@ -2,12 +2,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { useContext } from 'react';
-import { PageContext } from '../../../../context';
-import { getSortedYears, getSortedData } from './../../../../data/sorted';
+import { FilterContext } from '@/context/filtersContext';
+import { getSortedYears, getSortedData } from '@/data/sorted';
 
 function SortedSelect() {
 	const { sortedValue, setSortedValue, releaseYear, setReleaseYear } =
-		useContext(PageContext);
+		useContext(FilterContext);
 
 	const handleChangeSorted = (event: any) => {
 		setSortedValue(event.target.value as string);

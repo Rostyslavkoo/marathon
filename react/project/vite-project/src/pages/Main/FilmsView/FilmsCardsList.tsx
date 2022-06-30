@@ -5,8 +5,9 @@ import {
 	UpdateLikedFilm,
 	UpdateSeeLater,
 	resetLikedAndLater,
-} from './../../../data/films';
-import { PageContext, AutorisationContext } from '../../../context';
+} from '@/data/films';
+import { AutorisationContext } from '@/context/autorisationContext';
+import { FilterContext } from '@/context/filtersContext';
 import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -19,7 +20,7 @@ function FilmsCardsList() {
 		filterValues,
 		isLaterFilter,
 		isLikedFilter,
-	} = useContext(PageContext);
+	} = useContext(FilterContext);
 
 	const params = {
 		page: page,
@@ -33,6 +34,7 @@ function FilmsCardsList() {
 	const [films, setFilms] = useState(getFilms(params));
 	const { user } = useSelector(state => state);
 	const isLogin = 'login' in user;
+	
 	useEffect(() => {
 		if (!isLogin) {
 			resetLikedAndLater();

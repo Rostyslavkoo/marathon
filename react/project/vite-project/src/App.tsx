@@ -2,7 +2,7 @@ import Header from './UI/Header';
 import MainPage from './pages/Main/MainPage';
 import FilmDetailsPage from './pages/FilmDetails/FilmDetailsComponent';
 import { useState } from 'react';
-import { AutorisationContext } from './context';
+import { AutorisationContext } from '@/context/autorisationContext';
 import { Routes, Route } from 'react-router-dom';
 
 function App() {

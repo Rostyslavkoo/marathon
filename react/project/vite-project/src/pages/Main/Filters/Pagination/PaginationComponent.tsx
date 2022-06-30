@@ -1,8 +1,8 @@
 import Pagination from '@mui/material/Pagination';
-import { PageContext } from '../../../../context';
+import { FilterContext } from '@/context/filtersContext';
 import { useContext } from 'react';
 function PaginationComponent() {
-	const { page, setPage, paginationLength } = useContext(PageContext);
+	const { page, setPage, paginationLength } = useContext(FilterContext);
 	const handleChangePage = (
 		event: React.ChangeEvent<unknown>,
 		value: number

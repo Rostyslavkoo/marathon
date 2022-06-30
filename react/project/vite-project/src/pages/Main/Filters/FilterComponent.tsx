@@ -10,7 +10,8 @@ import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlin
 import StarIcon from '@mui/icons-material/Star';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 
-import { PageContext, AutorisationContext } from '../../../context';
+import { FilterContext } from '@/context/filtersContext';
+import { AutorisationContext } from '@/context/autorisationContext';
 import { useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -26,8 +27,8 @@ function FilterComponent() {
 		setIsLikedFilter,
 		isLaterFilter,
 		setIsLaterFilter,
-	} = useContext(PageContext);
-	
+	} = useContext(FilterContext);
+
 	function resetFilters() {
 		setSortedValue('');
 		setReleaseYear('');
