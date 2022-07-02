@@ -14,8 +14,7 @@ function Header() {
 	const dispatch = useDispatch();
 	const { openLoginDialog, setOpenLoginDialog } =
 		useContext(AutorisationContext);
-		console.log(useContext(AutorisationContext))
-	const handleClickOpen = () => {
+	const handleClickOpen = () => {ƒ
 		if (isLogin) {
 			dispatch(removeUserData());
 			localStorage.removeItem('user');

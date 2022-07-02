@@ -4,6 +4,7 @@ import FilmDetailsPage from './pages/FilmDetails/FilmDetailsComponent';
 import { useState } from 'react';
 import { AutorisationContext } from '@/context/autorisationContext';
 import { Routes, Route } from 'react-router-dom';
+import SearchComponent from './pages/search/searchComponent';
 
 function App() {
 	const [openLoginDialog, setOpenLoginDialog] = useState(false);
@@ -19,6 +20,7 @@ function App() {
 				<Routes>
 					<Route path='/' element={<MainPage />} />
 					<Route path='film-about-:id'element={<FilmDetailsPage />} />
+					<Route path='search'element={<SearchComponent />} />
 				</Routes>
 			</AutorisationContext.Provider>
 		</div>

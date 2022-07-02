@@ -4078,7 +4078,7 @@ export function UpdateLikedFilm(id: number | string) {
 	}
 }
 
-export function UpdateSeeLater(id:number | string) {
+export function UpdateSeeLater(id: number | string) {
 	const film = films.find(film => film.id === id);
 	if ('is_see_later' in film) {
 		film.is_see_later = !film.is_see_later;
@@ -4086,7 +4086,7 @@ export function UpdateSeeLater(id:number | string) {
 		film.is_see_later = true;
 	}
 }
-export function getFilmById(id:number | string) {
+export function getFilmById(id: number | string) {
 	return films.find(film => film.id == id);
 }
 export const PaginationOptions = {
@@ -4097,6 +4097,37 @@ let filmLength = films.length;
 export function getFimsLength() {
 	return filmLength;
 }
+export function getSearchedFilms(
+	{ genres, filmRating, PopularityValue }: any,
+	allGenres: any
+) {
+	let searchedFilms = [...films];
+	const genresWithId:any = [];
+	genres.forEach(genre => {
+		genresWithId.push(allGenres.find(mainGenre => mainGenre.name == genre).id);
+	});
+
+	if (genresWithId.length) {
+		genresWithId.forEach((filterValue:any) => {
+			searchedFilms = searchedFilms.filter(film => {
+				if (film.genre_ids.includes(Number(filterValue))) return film;
+			});
+		});
+	}
+	if(filmRating === 'unknown'){
+		searchedFilms = searchedFilms.filter(searchedFilm => searchedFilm.vote_average < 5 )
+	}else{
+		searchedFilms = searchedFilms.filter(searchedFilm => searchedFilm.vote_average >= 5 )
+	}
+	if(PopularityValue === 'popular' ){
+		searchedFilms = searchedFilms.filter(searchedFilm => searchedFilm.popularity > 100 &&  searchedFilm.vote_count > 200 )
+	}else{
+		searchedFilms = searchedFilms.filter(searchedFilm => searchedFilm.popularity <= 100 &&  searchedFilm.vote_count <= 200 )
+	}
+	return searchedFilms
+
+
+}
 export function getFilms({
 	page,
 	sorted_by,
@@ -4104,13 +4135,13 @@ export function getFilms({
 	filterValues,
 	isLaterFilter,
 	isLikedFilter,
-}:{
-	page:any,
-	sorted_by:string,
-	release_year:any,
-	filterValues:any,
-	isLaterFilter:boolean,
-	isLikedFilter:boolean
+}: {
+	page: any;
+	sorted_by: string;
+	release_year: any;
+	filterValues: any;
+	isLaterFilter: boolean;
+	isLikedFilter: boolean;
 }) {
 	let sortedFilms = [...films];
 	if (isLaterFilter) {
