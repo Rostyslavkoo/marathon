@@ -18,6 +18,7 @@ function SearchComponent() {
 		setSearchedfilms([]);
 		setIsSearched(false);
 	}
+	document.title = 'FILMS | Search Page'
 	return (
 		<Container maxWidth='md' sx={{ mt: 2 }}>
 			<SearchForm

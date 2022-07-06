@@ -20,6 +20,8 @@ function MainPage() {
 	useEffect(() => {
 		setPaginationLength(Math.round(getFimsLength() / PaginationOptions.limit));
 	}, [releaseYear, filterValues,isLikedFilter,isLaterFilter]);
+	document.title = 'FILMS | Main Page'	
+
 	return (
 		<div>
 			<Container sx={{ mt: 2 }} maxWidth='xl'>

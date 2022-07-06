@@ -12,6 +12,7 @@ function FilmDetailsComponent() {
 			backgroundSize: 'cover',
 		},
 	};
+	document.title = `FILMS | ${title}`
 	return (
 		<div>
 			<div className='film-details-banner' style={styles.backgroundFilm}>
