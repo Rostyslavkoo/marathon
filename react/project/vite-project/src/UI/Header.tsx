@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginDialog from '@/pages/Login/LoginDialog';
-import { removeUserData } from '@/redux/actions';
+import { removeUserData } from '@/redux/reducers/user';
 import { AutorisationContext } from '@/context/autorisationContext';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
@@ -16,7 +16,6 @@ function Header() {
 	const { openLoginDialog, setOpenLoginDialog } =
 		useContext(AutorisationContext);
 	const handleClickOpen = () => {
-		ƒ;
 		if (isLogin) {
 			dispatch(removeUserData());
 			localStorage.removeItem('user');
@@ -25,6 +24,7 @@ function Header() {
 		}
 	};
 	const { user } = useSelector(state => state);
+
 	const isLogin = 'login' in user;
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -41,7 +41,7 @@ function Header() {
 						}}
 					>
 						<Link to='/search'>
-								<SearchIcon  sx={{mx:3}} fontSize="small"/>
+							<SearchIcon sx={{ mx: 3 }} fontSize='small' />
 						</Link>
 						<Button
 							color={isLogin ? 'error' : 'success'}

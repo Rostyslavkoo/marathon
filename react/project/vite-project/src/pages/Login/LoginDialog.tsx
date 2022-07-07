@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserData } from '../../redux/actions';
+import { setUserData } from '../../redux/reducers/user';
 
 
 function LoginDialgo({

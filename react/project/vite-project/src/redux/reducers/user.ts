@@ -1,19 +1,23 @@
-import { USER_DATA, REMOVE_USER_DATA } from '../actions'
+import { createSlice } from '@reduxjs/toolkit';
 
 let userData = {};
 if (localStorage.user) {
 	userData = JSON.parse(localStorage.user);
 }
-
-const user = (state = userData, action:any) => {
-	switch (action.type) {
-		case USER_DATA:
+const userSlice = createSlice({
+	name: 'user',
+	initialState: userData,
+	reducers: {
+		setUserData(state, action) {
 			return action.payload;
-		case REMOVE_USER_DATA:
+		},
+		removeUserData(state, action) {
 			return (state = []);
-		default:
-			return state;
-	}
-};
+		},
+	},
+});
+const { actions, reducer } = userSlice;
+export const { setUserData, removeUserData } = actions;
 
-export default user;
+console.log(actions);
+export default reducer;
