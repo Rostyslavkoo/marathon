@@ -1,19 +1,27 @@
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import { useContext } from 'react';
-import { FilterContext } from '@/context/filtersContext';
 import { getSortedYears, getSortedData } from '@/data/sorted';
+import { setFilters } from '@/redux/reducers/filters';
+import { useSelector, useDispatch } from 'react-redux';
 
 function SortedSelect() {
-	const { sortedValue, setSortedValue, releaseYear, setReleaseYear } =
-		useContext(FilterContext);
+	const dispatch = useDispatch();
+	const { sortedValue, releaseYear } = useSelector(state => state.filters);
 
 	const handleChangeSorted = (event: any) => {
-		setSortedValue(event.target.value as string);
+		dispatch(
+			setFilters({
+				sortedValue: event.target.value as string,
+			})
+		);
 	};
 	const handleChangeYear = (event: any) => {
-		setReleaseYear(event.target.value as any);
+		dispatch(
+			setFilters({
+				releaseYear: event.target.value as any,
+			})
+		);
 	};
 
 	return (

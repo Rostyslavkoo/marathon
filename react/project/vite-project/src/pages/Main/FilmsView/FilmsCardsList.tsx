@@ -9,9 +9,10 @@ import {
 import { AutorisationContext } from '@/context/autorisationContext';
 import { FilterContext } from '@/context/filtersContext';
 import { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 
 function FilmsCardsList() {
+	const dispatch = useDispatch()
 	const { setOpenLoginDialog } = useContext(AutorisationContext);
 	const {
 		page,
@@ -20,7 +21,7 @@ function FilmsCardsList() {
 		filterValues,
 		isLaterFilter,
 		isLikedFilter,
-	} = useContext(FilterContext);
+	} = useSelector(state => state.filters);
 
 	const params = {
 		page: page,
@@ -33,8 +34,8 @@ function FilmsCardsList() {
 
 	const [films, setFilms] = useState(getFilms(params));
 	const { user } = useSelector(state => state);
-	const isLogin = 'login' in user;
-	
+	const { isLogin } = user;
+
 	useEffect(() => {
 		if (!isLogin) {
 			resetLikedAndLater();

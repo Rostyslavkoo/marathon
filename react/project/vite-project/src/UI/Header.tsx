@@ -3,18 +3,19 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginDialog from '@/pages/Login/LoginDialog';
-import { removeUserData } from '@/redux/reducers/user';
+import { removeUserData, isUserLogin } from '@/redux/reducers/user';
 import { AutorisationContext } from '@/context/autorisationContext';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
+
 function Header() {
 	const dispatch = useDispatch();
 	const { openLoginDialog, setOpenLoginDialog } =
 		useContext(AutorisationContext);
+
 	const handleClickOpen = () => {
 		if (isLogin) {
 			dispatch(removeUserData());
@@ -24,8 +25,7 @@ function Header() {
 		}
 	};
 	const { user } = useSelector(state => state);
-
-	const isLogin = 'login' in user;
+	const { isLogin } = user;
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position='static'>

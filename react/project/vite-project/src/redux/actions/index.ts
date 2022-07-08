@@ -6,7 +6,6 @@ export const IS_LOGIN = 'IS_LOGIN';
 export const GET_FILMS = 'GET_FILMS';
 
 export const getfilms = createAction('GET_FILMS')
-
 export const setUserData = createAction('USER_DATA')
 export const removeUserData = createAction('REMOVE_USER_DATA')
 

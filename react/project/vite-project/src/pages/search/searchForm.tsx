@@ -142,9 +142,6 @@ function SeachForm({ searchedParams,resetParams }) {
 										>
 											Continue
 										</Button>
-										<Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
-											Back
-										</Button>
 									</div>
 								</Box>
 							</StepContent>

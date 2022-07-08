@@ -4174,7 +4174,6 @@ export function getFilms({
 		});
 	}
 	filmLength = sortedFilms.length;
-
 	return [...sortedFilms].slice(
 		PaginationOptions.limit * (page - 1),
 		PaginationOptions.limit * page

@@ -4,17 +4,28 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Typography from '@mui/material/Typography';
 import { getGenres } from '@/data/genres';
 import Pagination from './../Pagination/PaginationComponent';
-import { FilterContext } from '@/context/filtersContext';
-import { useContext } from 'react';
+import { setFilters } from '@/redux/reducers/filters';
+import { useSelector, useDispatch } from 'react-redux';
 
 function SortedCheckboxList() {
+	const dispatch = useDispatch();
 	const checkboxValue = getGenres();
-	const { page, filterValues, setFilterValues } = useContext(FilterContext);
+	const { page, filterValues } = useSelector(state => state.filters);
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
 		if (!event.target.checked) {
-			setFilterValues(filterValues.filter((item:any) => item != event.target.name));
+			dispatch(
+				setFilters({
+					filterValues: filterValues.filter(
+						(item: any) => item != event.target.name
+					),
+				})
+			);
 		} else {
-			setFilterValues([...filterValues, event.target.name]);
+			dispatch(
+				setFilters({
+					filterValues: [...filterValues, event.target.name],
+				})
+			);
 		}
 	}
 	return (
@@ -28,7 +39,9 @@ function SortedCheckboxList() {
 								size='small'
 								name={checkbox.id.toString()}
 								checked={
-									!!filterValues.find((item:any) => item == checkbox.id.toString())
+									!!filterValues.find(
+										(item: any) => item == checkbox.id.toString()
+									)
 								}
 								onChange={handleChange}
 								sx={{ py: '1px' }}

@@ -5,19 +5,25 @@ if (localStorage.user) {
 	userData = JSON.parse(localStorage.user);
 }
 const userSlice = createSlice({
-	name: 'user',
+	name: 'users',
 	initialState: userData,
 	reducers: {
 		setUserData(state, action) {
-			return action.payload;
+			return {
+				...action.payload,
+				isLogin: !!action.payload,
+			};
 		},
 		removeUserData(state, action) {
 			return (state = []);
 		},
+		isUserLogin(state, action) {
+			return state;
+		},
 	},
 });
 const { actions, reducer } = userSlice;
-export const { setUserData, removeUserData } = actions;
+export const { setUserData, removeUserData, isUserLogin } = actions;
 
-console.log(actions);
+
 export default reducer;

@@ -1,13 +1,15 @@
 import Pagination from '@mui/material/Pagination';
-import { FilterContext } from '@/context/filtersContext';
-import { useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilters } from '@/redux/reducers/filters';
+
 function PaginationComponent() {
-	const { page, setPage, paginationLength } = useContext(FilterContext);
+	const dispatch = useDispatch();
+	const { page, paginationLength } = useSelector(state => state.filters);
 	const handleChangePage = (
 		event: React.ChangeEvent<unknown>,
 		value: number
 	) => {
-		setPage(value);
+		dispatch(setFilters({ page: value }));
 	};
 	return (
 		<Pagination

@@ -9,55 +9,51 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import StarIcon from '@mui/icons-material/Star';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-
-import { FilterContext } from '@/context/filtersContext';
 import { AutorisationContext } from '@/context/autorisationContext';
 import { useContext, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetFilters, setFilters } from '@/redux/reducers/filters';
 
 function FilterComponent() {
+	const dispatch = useDispatch();
 	const { setOpenLoginDialog } = useContext(AutorisationContext);
 	const { user } = useSelector(state => state);
-	const isLogin = 'login' in user;
-	const {
-		setSortedValue,
-		setReleaseYear,
-		setFilterValues,
-		isLikedFilter,
-		setIsLikedFilter,
-		isLaterFilter,
-		setIsLaterFilter,
-	} = useContext(FilterContext);
+	const { isLogin } = user;
+	const { isLikedFilter, isLaterFilter } = useSelector(state => state.filters);
 
-	function resetFilters() {
-		setSortedValue('');
-		setReleaseYear('');
-		setFilterValues([]);
-		setIsLaterFilter(false);
-		setIsLikedFilter(false);
-	}
 	function handleResetCLick() {
-		resetFilters();
+		dispatch(resetFilters());
 	}
 	useEffect(() => {
 		if (!isLogin) {
-			setIsLaterFilter(false);
-			setIsLikedFilter(false);
+			dispatch(
+				setFilters({
+					isLikedFilter: false,
+					isLaterFilter: false,
+				})
+			);
 		}
 	}, [isLogin]);
 	function handleLiked() {
 		if (!isLogin) {
 			setOpenLoginDialog(true);
 		} else {
-			console.log(isLikedFilter);
-			setIsLikedFilter(!isLikedFilter);
+			dispatch(
+				setFilters({
+					isLikedFilter: !isLikedFilter,
+				})
+			);
 		}
 	}
 	function handleLater() {
 		if (!isLogin) {
 			setOpenLoginDialog(true);
 		} else {
-			setIsLaterFilter(!isLaterFilter);
+			dispatch(
+				setFilters({
+					isLaterFilter: !isLaterFilter,
+				})
+			);
 		}
 	}
 	return (

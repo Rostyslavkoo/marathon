@@ -2,61 +2,53 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import FilterComponent from './Filters/FilterComponent';
 import FilmsViewComponent from './FilmsView/FilmsViewComponent';
-import { useState, useEffect } from 'react';
-import { FilterContext } from '@/context/filtersContext';
+import { useEffect } from 'react';
 import { getFimsLength, PaginationOptions } from '@/data/films';
-import { getSortedCONSTANS } from '@/data/sorted';
+import { setFilters } from '@/redux/reducers/filters';
+import { useDispatch, useSelector } from 'react-redux';
 
 function MainPage() {
-	const [page, setPage] = useState(1);
-	const [paginationLength, setPaginationLength] = useState(1);
+	const dispatch = useDispatch();
 
-	const [sortedValue, setSortedValue] = useState(getSortedCONSTANS().DEFAULT);
-	const [releaseYear, setReleaseYear] = useState(2020);
-	const [filterValues, setFilterValues] = useState([]);
-	const [isLikedFilter,setIsLikedFilter] = useState(false)
-	const [isLaterFilter,setIsLaterFilter] = useState(false)
+	const {
+		paginationLength,
+		releaseYear,
+		filterValues,
+		isLikedFilter,
+		isLaterFilter,
+	} = useSelector(state => state.filters);
 
 	useEffect(() => {
-		setPaginationLength(Math.round(getFimsLength() / PaginationOptions.limit));
-	}, [releaseYear, filterValues,isLikedFilter,isLaterFilter]);
-	document.title = 'FILMS | Main Page'	
+		dispatch(
+			setFilters({
+				paginationLength: Math.round(getFimsLength() / PaginationOptions.limit),
+			})
+		);
+	}, [
+		releaseYear,
+		filterValues,
+		isLikedFilter,
+		isLaterFilter,
+		paginationLength,
+	]);
+	document.title = 'FILMS | Main Page';
 
 	return (
 		<div>
 			<Container sx={{ mt: 2 }} maxWidth='xl'>
-				<FilterContext.Provider
-					value={{
-						page: page,
-						setPage: setPage,
-						paginationLength,
-						setPaginationLength,
-						sortedValue: sortedValue,
-						setSortedValue: setSortedValue,
-						releaseYear: releaseYear,
-						setReleaseYear: setReleaseYear,
-						filterValues: filterValues,
-						setFilterValues: setFilterValues,
-						isLaterFilter:isLaterFilter,
-						setIsLikedFilter:setIsLikedFilter,
-						isLikedFilter:isLikedFilter,
-						setIsLaterFilter:setIsLaterFilter
-					}}
+				<Grid
+					container
+					spacing={3}
+					direction='row'
+					justifyContent='space-between'
 				>
-					<Grid
-						container
-						spacing={2}
-						direction='row'
-						justifyContent='space-between'
-					>
-						<Grid item xs={4}>
-							<FilterComponent />
-						</Grid>
-						<Grid item xs={8}>
-							<FilmsViewComponent />
-						</Grid>
+					<Grid item xs={3}>
+						<FilterComponent />
 					</Grid>
-				</FilterContext.Provider>
+					<Grid item xs={9}>
+						<FilmsViewComponent />
+					</Grid>
+				</Grid>
 			</Container>
 		</div>
 	);
